@@ -1,0 +1,4 @@
+*.pro*
+*.vcxproj*
+stdafx*
+targetver.h
