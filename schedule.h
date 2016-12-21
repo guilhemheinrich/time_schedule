@@ -1,21 +1,40 @@
 #ifndef SCHEDULE_H
 #define SCHEDULE_H
 
+#include <set>
+#include <string>
+
+using ul = unsigned long;
 
 enum class Day {MONDAY = 0, TUESDAY = 1, WEDNESDAY = 2, THURSDAY = 3, FRIDAY = 4, SUNDAY = 5};
+std::string to_string(Day);
+
 class Schedule
 {
 public:
     Schedule(){}
-    Schedule(Day day, unsigned long hour, unsigned long minute);
-    static const unsigned long session_last = 1;
+    Schedule(Day day, ul hour, ul minute);
+
+	// Duration is in hour
+    static const ul session_duration = 1;
+
+	static std::set<int> buildRegularCalendar(std::set<Day> in_days = { Day::MONDAY,  Day::TUESDAY,  Day::WEDNESDAY,  Day::THURSDAY,  Day::FRIDAY,  Day::SUNDAY},
+		std::pair<ul, ul> in_startMorning = std::pair<ul, ul>(8, 0), ul in_morningDuration = 4, std::pair<ul, ul> in_startAfternoon = std::pair<ul, ul>(14, 0), ul in_afternoonDuration = 4);
 
     int encode() const;
     static Schedule decode(int footprint);
+
+	int next();
+	static int next(int);
+
+	Day getDay();
+	ul getHour();
+	ul getMinute();
 private:
+	int _ID;
     Day _day = Day::MONDAY;
-    unsigned long _hour;
-    unsigned long _minute;
+    ul _hour;
+    ul _minute;
 
 };
 
