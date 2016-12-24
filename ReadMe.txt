@@ -28,3 +28,6 @@ Autres remarques :
 AppWizard utilise des commentaires "TODO:" pour indiquer les parties du code source où vous devrez ajouter ou modifier du code.
 
 /////////////////////////////////////////////////////////////////////////////
+
+TODO : moove occupyBy() and Free() from rooms class in the slot class. 
+TODO : add encode() and decode() in slot class.

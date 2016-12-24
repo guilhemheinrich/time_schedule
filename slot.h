@@ -4,12 +4,18 @@
 #include "schedule.h"
 
 
-
+// Slot is the product of a room and a shedule
 class Slot
 {
-    Slot();
+public:
+    Slot(Schedule in_schedule, Room in_room);
     Schedule _schedule;
     Room _room;
+
+    int encode();
+    int decode();
+private:
+    Slot();
 
 };
 

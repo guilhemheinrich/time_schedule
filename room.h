@@ -13,7 +13,8 @@ public:
 	Room();
 	Room(std::set<int> in_availibility);
 
-	bool occupyBy();
+    bool occupyBy(int in_scheduleID, Teacher in_teacher, Class in_class);
+    bool free(int in_scheduleID);
 private:
     int _ID;
 

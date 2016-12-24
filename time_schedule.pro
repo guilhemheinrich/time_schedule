@@ -15,7 +15,8 @@ SOURCES += main.cpp \
     teacher.cpp \
     slot.cpp \
     schedule.cpp \
-    solution.cpp
+    solution.cpp \
+    problem.cpp
 
 HEADERS += \
     class.h \
@@ -23,4 +24,5 @@ HEADERS += \
     teacher.h \
     slot.h \
     schedule.h \
-    solution.h
+    solution.h \
+    problem.h
