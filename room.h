@@ -10,17 +10,16 @@
 class Room
 {
 public:
-	Room();
-	Room(std::set<int> in_availibility);
+	Room(std::string in_name);
+	Room(std::string in_name, std::set<int> in_availibility);
 
-    bool occupyBy(int in_scheduleID, Teacher in_teacher, Class in_class);
-    bool free(int in_scheduleID);
+
 private:
+	static int _cpt;
     int _ID;
+	std::string _name;
 
-	// ID of schedules
-    std::set<int> _availability;
-    std::map<int, std::pair<Teacher, Class> > _occupied;
+
 };
 
 #endif // ROOM_H

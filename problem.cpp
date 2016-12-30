@@ -6,15 +6,17 @@ Problem::Problem()
 
 }
 
-std::set<int> Problem::sAllSchedulesID() const
+std::set<Schedule> Problem::sAllSchedules() const
 {
-    return _sAllSchedulesID;
+	return _sAllSchedules;
 }
 
-void Problem::setSAllSchedulesID(const std::set<int> &sAllSchedulesID)
+void Problem::setSAllSchedules(const std::set<Schedule>& sAllSchedules)
 {
-    _sAllSchedulesID = sAllSchedulesID;
+	_sAllSchedules = sAllSchedules;
 }
+
+
 
 std::set<Teacher> Problem::sTeachers() const
 {
@@ -36,12 +38,13 @@ void Problem::setSClasses(const std::set<Class> &sClasses)
     _sClasses = sClasses;
 }
 
-std::set<int> Problem::sAllRoomsID() const
+std::set<Room> Problem::sAllRooms() const
 {
-    return _sAllRoomsID;
+	return _sAllRooms;
 }
 
-void Problem::setSAllRoomsID(const std::set<int> &sAllRoomsID)
+void Problem::setSAllRooms(const std::set<Room>& sAllRooms)
 {
-    _sAllRoomsID = sAllRoomsID;
+	_sAllRooms = sAllRooms;
 }
+

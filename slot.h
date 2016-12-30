@@ -9,12 +9,19 @@ class Slot
 {
 public:
     Slot(Schedule in_schedule, Room in_room);
-    Schedule _schedule;
-    Room _room;
 
     int encode();
-    int decode();
+    static Slot decode();
+
+	bool occupyBy(int in_scheduleID, Teacher in_teacher, Class in_class);
+	bool free(int in_scheduleID);
 private:
+    Schedule _schedule;
+    Room _room;
+	// ID of schedules
+	std::set<int> _availability;
+	std::map<int, std::pair<Teacher, Class> > _occupied;
+
     Slot();
 
 };

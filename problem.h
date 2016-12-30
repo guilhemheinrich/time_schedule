@@ -5,13 +5,15 @@
 #include <vector>
 #include "teacher.h"
 #include "class.h"
+#include "schedule.h"
+#include "room.h"
 class Problem
 {
 public:
     Problem();
 
-    std::set<int> sAllSchedulesID() const;
-    void setSAllSchedulesID(const std::set<int> &sAllSchedulesID);
+    std::set<Schedule> sAllSchedules() const;
+    void setSAllSchedules(const std::set<Schedule> &sAllSchedules);
 
     std::set<Teacher> sTeachers() const;
     void setSTeachers(const std::set<Teacher> &sTeachers);
@@ -19,14 +21,14 @@ public:
     std::set<Class> sClasses() const;
     void setSClasses(const std::set<Class> &sClasses);
 
-    std::set<int> sAllRoomsID() const;
-    void setSAllRoomsID(const std::set<int> &sAllRoomsID);
+    std::set<Room> sAllRooms() const;
+    void setSAllRooms(const std::set<Room> &sAllRooms);
 
 private:
     // Calendar
-    std::set<int> _sAllSchedulesID;
+    std::set<Schedule> _sAllSchedules;
     // Rooms
-    std::set<int> _sAllRoomsID;
+    std::set<Room> _sAllRooms;
 
     std::set<Teacher> _sTeachers;
     std::set<Class> _sClasses;
