@@ -3,6 +3,7 @@
 
 #include <set>
 #include <vector>
+#include <algorithm>
 #include "IncludedHeaders.h"
 #include "teacher.h"
 #include "class.h"
@@ -13,31 +14,25 @@ class Problem
 public:
     Problem();
 
-    std::set<Schedule> sAllSchedules() const;
-    void setSAllSchedules(const std::set<Schedule> &sAllSchedules);
+    std::vector<Schedule> vSchedules() const;
+    void setVSchedules(std::vector<Schedule> vSchedules);
 
-    std::set<Teacher> sTeachers() const;
-    void setSTeachers(const std::set<Teacher> &sTeachers);
+    std::vector<Teacher> vTeachers() const;
+    void setVTeachers(const std::vector<Teacher> &vTeachers);
 
-    std::set<Class> sClasses() const;
-    void setSClasses(const std::set<Class> &sClasses);
+    std::vector<Class> vClasses() const;
+    void setVClasses(const std::vector<Class> &vClasses);
 
-    std::set<Room> sAllRooms() const;
-    void setSAllRooms(const std::set<Room> &sAllRooms);
+    std::vector<Room> vRooms() const;
+    void setVRooms(const std::vector<Room> &vRooms);
 
 
 private:
-    // Calendar
-    std::set<Schedule> _sAllSchedules;
-    // Rooms
-    std::set<Room> _sAllRooms;
+    std::vector<Schedule> _vSchedules;
+    std::vector<Room> _vRooms;
+    std::vector<Teacher> _vTeachers;
+    std::vector<Class> _vClasses;
 
-    std::set<Teacher> _sTeachers;
-    std::set<Class> _sClasses;
-
-
-	// All constructed slot
-    //std::set<>
 };
 
 

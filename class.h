@@ -15,10 +15,10 @@ class Class
 {
 public:
 	Class(std::string in_name, std::map<Subject, hourObjectiveAndFill > in_subjectsAndRequirements);
-	Class(ul in_ID);
+	//Class(ul in_ID);
 private:
 	//static ul _cpt;
-	static std::vector<std::reference_wrapper<Class>> _allClass;
+	//static std::vector<std::reference_wrapper<Class>> _allClass;
 	std::string _name;
 	std::map<Subject, hourObjectiveAndFill > _subjectsAndRequirements;
 };

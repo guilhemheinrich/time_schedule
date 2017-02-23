@@ -1,0 +1,17 @@
+﻿  stdafx.cpp
+  time_schedule.cpp
+e:\c_cpp\time_schedule\time_schedule\time_schedule.cpp(44): fatal error C1010: fin de fichier inattendue lors de la recherche d'un en-tête précompilé. N'auriez-vous pas oublié d'ajouter '#include "stdafx.h"' à votre source ?
+  teacher.cpp
+e:\c_cpp\time_schedule\time_schedule\teacher.cpp(12): fatal error C1010: fin de fichier inattendue lors de la recherche d'un en-tête précompilé. N'auriez-vous pas oublié d'ajouter '#include "stdafx.h"' à votre source ?
+  solution.cpp
+e:\c_cpp\time_schedule\time_schedule\solution.cpp(7): fatal error C1010: fin de fichier inattendue lors de la recherche d'un en-tête précompilé. N'auriez-vous pas oublié d'ajouter '#include "stdafx.h"' à votre source ?
+  schedule.cpp
+e:\c_cpp\time_schedule\time_schedule\schedule.cpp(113): fatal error C1010: fin de fichier inattendue lors de la recherche d'un en-tête précompilé. N'auriez-vous pas oublié d'ajouter '#include "stdafx.h"' à votre source ?
+  room.cpp
+e:\c_cpp\time_schedule\time_schedule\room.cpp(66): fatal error C1010: fin de fichier inattendue lors de la recherche d'un en-tête précompilé. N'auriez-vous pas oublié d'ajouter '#include "stdafx.h"' à votre source ?
+  problem.cpp
+e:\c_cpp\time_schedule\time_schedule\problem.cpp(51): fatal error C1010: fin de fichier inattendue lors de la recherche d'un en-tête précompilé. N'auriez-vous pas oublié d'ajouter '#include "stdafx.h"' à votre source ?
+  Debug.cpp
+  class.cpp
+e:\c_cpp\time_schedule\time_schedule\class.cpp(32): fatal error C1010: fin de fichier inattendue lors de la recherche d'un en-tête précompilé. N'auriez-vous pas oublié d'ajouter '#include "stdafx.h"' à votre source ?
+  Génération de code en cours...

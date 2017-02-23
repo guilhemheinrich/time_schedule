@@ -3,16 +3,16 @@
 
 #include <string>
 #include "IncludedHeaders.h"
-class Teacher
+struct Teacher
 {
 public:
 	Teacher();
 	Teacher(std::string in_name);
-private:
-	ul _ID;
+
 	std::string _name;
 	ul _nbHourToGive = 15;
 	ul _hourGiven = 0;
+	Subject _subject;
 };
 
 #endif // TEACHER_H
