@@ -3,6 +3,7 @@
 
 #include <set>
 #include <vector>
+#include "IncludedHeaders.h"
 #include "teacher.h"
 #include "class.h"
 #include "schedule.h"
@@ -24,6 +25,7 @@ public:
     std::set<Room> sAllRooms() const;
     void setSAllRooms(const std::set<Room> &sAllRooms);
 
+
 private:
     // Calendar
     std::set<Schedule> _sAllSchedules;
@@ -32,7 +34,11 @@ private:
 
     std::set<Teacher> _sTeachers;
     std::set<Class> _sClasses;
-//    std::set<>
+
+
+	// All constructed slot
+    //std::set<>
 };
+
 
 #endif // PROBLEM_H

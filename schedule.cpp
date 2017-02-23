@@ -35,7 +35,7 @@ std::set<int> Schedule::buildRegularCalendar(std::set<Day> in_days, std::pair<ul
 }
 
 
-int Schedule::encode() const
+ul Schedule::encode() const
 {
     int out_footprint = 0;
     out_footprint += (int) _day * 24 * 60;
@@ -44,7 +44,7 @@ int Schedule::encode() const
     return out_footprint;
 }
 
-Schedule Schedule::decode(int footprint)
+Schedule Schedule::decode(ul footprint)
 {  
     ul ulTmp = footprint % (24 * 60);
     ul minute = footprint % 60;
@@ -54,14 +54,39 @@ Schedule Schedule::decode(int footprint)
 	return out_schedule;
 }
 
-int Schedule::next()
+ul Schedule::next()
 {
 	return next(_ID);
 }
 
-int Schedule::next(int in_ID)
+ul Schedule::next(ul in_ID)
 {
 	return in_ID + session_duration * 60;
+}
+
+bool Schedule::operator==(Schedule in_rValue)
+{
+	return _ID == in_rValue._ID;
+}
+
+bool Schedule::operator<=(Schedule in_rValue)
+{
+	return _ID <= in_rValue._ID;
+}
+
+bool Schedule::operator>=(Schedule in_rValue)
+{
+	return _ID >= in_rValue._ID;
+}
+
+bool Schedule::operator<(Schedule in_rValue)
+{
+	return !(*this >= in_rValue);
+}
+
+bool Schedule::operator>(Schedule in_rValue)
+{
+	return !(*this <= in_rValue);
 }
 
 Day Schedule::getDay()

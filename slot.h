@@ -1,28 +1,33 @@
 #ifndef SLOT_H
 #define SLOT_H
+
+#include <string.h>
+#include "IncludedHeaders.h"
 #include "room.h"
 #include "schedule.h"
 
 
 // Slot is the product of a room and a shedule
-class Slot
+namespace Slot
 {
-public:
-    Slot(Schedule in_schedule, Room in_room);
+    //Slot(Schedule in_schedule, Room in_room);
 
-    int encode();
-    static Slot decode();
+	int encode(std::pair<Schedule, Room> in_pScheduleAndRoom, std::string &out_sSlot);
+	int decode(std::string in_sSlot, std::pair<Schedule, Room> &out_pScheduleAndRoom);
 
-	bool occupyBy(int in_scheduleID, Teacher in_teacher, Class in_class);
-	bool free(int in_scheduleID);
-private:
-    Schedule _schedule;
-    Room _room;
-	// ID of schedules
-	std::set<int> _availability;
-	std::map<int, std::pair<Teacher, Class> > _occupied;
+	std::string next(std::string in_sSlot);
 
-    Slot();
+
+	//bool occupyBy(int in_scheduleID, Teacher in_teacher, Class in_class);
+	//bool free(int in_scheduleID);
+
+ //   Schedule _schedule;
+ //   Room _room;
+	//// ID of schedules
+	//std::set<int> _availability;
+	//std::map<int, std::pair<Teacher, Class> > _occupied;
+
+ //   Slot();
 
 };
 

@@ -1,6 +1,7 @@
 #ifndef SOLUTION_H
 #define SOLUTION_H
 #include <vector>
+#include "IncludedHeaders.h"
 #include "class.h"
 #include "room.h"
 #include "schedule.h"
