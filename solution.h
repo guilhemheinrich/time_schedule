@@ -5,7 +5,7 @@
 #include "class.h"
 #include "room.h"
 #include "schedule.h"
-#include "slot.h"
+//#include "slot.h"
 #include "teacher.h"
 
 class Solution

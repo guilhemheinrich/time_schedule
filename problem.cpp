@@ -18,7 +18,7 @@ void Problem::setVSchedules(std::vector<Schedule> vSchedules)
 	//	_vSchedules.push_back(schedule);
 	//}
 	////_vSchedules = vSchedules;
-	std::sort(_vSchedules.begin(), _vSchedules.end());
+	//std::sort(_vSchedules.begin(), _vSchedules.end());
 	//auto last = std::unique(_vSchedules.begin(), _vSchedules.end());
 	//_vSchedules.erase(last, _vSchedules.end());
 }

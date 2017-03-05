@@ -3,8 +3,9 @@
 
 //#include "stdafx.h"
 #include "schedule.h"
-#include "problem.h"
+
 #include <iostream>
+#include <ctime>
 using namespace std;
 
 //void testBuildingRegularCalendar()
@@ -29,15 +30,12 @@ using namespace std;
 //	cin.get();
 //}
 
-void testBuildProblem() 
-{
-	Problem problem;
-
-};
 
 int main()
 {
 	//testBuildingRegularCalendar();
+
+
     return 0;
 }
 

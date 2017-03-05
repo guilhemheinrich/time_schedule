@@ -3,46 +3,56 @@
 
 #include <set>
 #include <string>
+#include <ctime>
+#include <vector>
 #include "IncludedHeaders.h"
 
-enum class Day {MONDAY = 0, TUESDAY = 1, WEDNESDAY = 2, THURSDAY = 3, FRIDAY = 4, SUNDAY = 5};
-std::string to_string(Day);
-
-class Schedule
+// test de ctime
+//tm testtm;
+//testtm.tm_sec = 1;   // seconds of minutes from 0 to 61
+//testtm.tm_min = 1;   // minutes of hour from 0 to 59
+//testtm.tm_hour = 1;  // hours of day from 0 to 24
+//testtm.tm_mday = 1;  // day of month from 1 to 31
+//testtm.tm_mon = 1;   // month of year from 0 to 11
+//testtm.tm_year = 1;  // year since 1900
+//testtm.tm_wday = 1;  // days since sunday
+//testtm.tm_yday = 1;  // days since January 1st
+//testtm.tm_isdst = 1; // hours of daylight savings time
+namespace Schedule
 {
-public:
-    Schedule(){}
-    Schedule(Day day, ul hour, ul minute);
+	static tm root_day;
+	static int session_duration = 1;
+	struct day
+	{
+		int start_morning = 8;
+		ul nb_session_morning = 4;
+		int start_afternoon = 13;
+		ul nb_session_afternoon = 4;
+	};
 
-	// Duration is in hour
-    static const ul session_duration = 1;
-
-	static std::set<int> buildRegularCalendar(std::set<Day> in_days = { Day::MONDAY,  Day::TUESDAY,  Day::WEDNESDAY,  Day::THURSDAY,  Day::FRIDAY,  Day::SUNDAY},
-		std::pair<ul, ul> in_startMorning = std::pair<ul, ul>(8, 0), ul in_morningDuration = 4, std::pair<ul, ul> in_startAfternoon = std::pair<ul, ul>(14, 0), ul in_afternoonDuration = 4);
-
- //   ul encode() const;
- //   static Schedule decode(ul footprint);
-
-	//ul next();
-	//static ul next(ul);
-
-	//// For using shedule as Key
-	//bool operator==(Schedule in_rValue);
-	//bool operator<=(Schedule in_rValue);
-	//bool operator>=(Schedule in_rValue);
-	//bool operator<(Schedule in_rValue);
-	//bool operator>(Schedule in_rValue);
+	static day week[6];
 
 
+	struct time_slot
+	{
+		tm start;
+		tm end;
 
-	//Day getDay();
-	//ul getHour();
-	//ul getMinute();
+		bool operator==(time_slot in_rValue);
+		bool operator<=(time_slot in_rValue);
+		bool operator>=(time_slot in_rValue);
+		bool operator<(time_slot in_rValue);
+		bool operator>(time_slot in_rValue);
 
-    Day _day = Day::MONDAY;
-    ul _hour;
-    ul _minute;
+	private:
+		int _encode();
+	};
 
-};
+	static std::vector<time_slot> allTimeSlot;
+	void buildAllTimeSlots();
+
+	int encode(tm timeToEncode);
+	bool checkInTimeInterval(tm timeToCheck, tm start, tm end);
+}
 
 #endif // SCHEDULE_H

@@ -1,112 +1,81 @@
 #include "schedule.h"
 #include <vector>
 
-
-Schedule::Schedule(Day day, ul hour, ul minute):
-_day(day)
+namespace Schedule
 {
-    if (hour < 24 && minute <61)
-    {
-        _hour = hour;
-        _minute = minute;
-    }
-	//_ID = encode();
-}
-//
-std::set<int> Schedule::buildRegularCalendar(std::set<Day> in_days, std::pair<ul, ul> in_startMorning, ul in_morningDuration, std::pair<ul, ul> in_startAfternoon, ul in_afternoonDuration)
-{
-	//std::set<int> out_scheduleIDs;
-	//for (Day day : in_days)
-	//{
-	//	for (ul morningCpt = 0; morningCpt < in_morningDuration; morningCpt++)
-	//	{
-	//		Schedule tmp_schedule(day, in_startMorning.first + morningCpt * session_duration, in_startMorning.second);
-	//		out_scheduleIDs.insert(tmp_schedule._ID);
-	//	}
 
-	//	for (ul afternoonCpt = 0; afternoonCpt < in_afternoonDuration; afternoonCpt++)
-	//	{
-	//		Schedule tmp_schedule(day, in_startAfternoon.first + afternoonCpt * session_duration, in_startAfternoon.second);
-	//		out_scheduleIDs.insert(tmp_schedule._ID);
-	//	}
-	//}
+	void buildAllTimeSlots()
+	{
+		for (ul ulDayCpt = 0; ulDayCpt < 6; ulDayCpt++)
+		{
+			day tmpDay = week[ulDayCpt];
+			time_slot tmpTs;
+			for (ul ulMorning = 0; ulMorning < tmpDay.nb_session_morning; ulMorning++)
+			{
+				// root + week day + startMorning + ulMorning * durationSession
+				tmpTs.start = root_day;
+				tmpTs.start.tm_hour += tmpDay.start_morning;
+				tmpTs.start.tm_hour += ulMorning * session_duration;
 
-	//return out_scheduleIDs;
-	return std::set<int>();
-}
-//
-//
-//ul Schedule::encode() const
-//{
-//    int out_footprint = 0;
-//    out_footprint += (int) _day * 24 * 60;
-//    out_footprint += (int) _hour * 60;
-//    out_footprint += (int) _minute;
-//    return out_footprint;
-//}
-//
-//Schedule Schedule::decode(ul footprint)
-//{  
-//    ul ulTmp = footprint % (24 * 60);
-//    ul minute = footprint % 60;
-//	ul hour = (ulTmp - minute) / 60;
-//    Day day = (Day) (footprint / (24 * 60));
-//	Schedule out_schedule(day, hour, minute);
-//	return out_schedule;
-//}
-//
-//ul Schedule::next()
-//{
-//	return next(_ID);
-//}
-//
-//ul Schedule::next(ul in_ID)
-//{
-//	return in_ID + session_duration * 60;
-//}
-//
-//bool Schedule::operator==(Schedule in_rValue)
-//{
-//	return _ID == in_rValue._ID;
-//}
-//
-//bool Schedule::operator<=(Schedule in_rValue)
-//{
-//	return _ID <= in_rValue._ID;
-//}
-//
-//bool Schedule::operator>=(Schedule in_rValue)
-//{
-//	return _ID >= in_rValue._ID;
-//}
-//
-//bool Schedule::operator<(Schedule in_rValue)
-//{
-//	return !(*this >= in_rValue);
-//}
-//
-//bool Schedule::operator>(Schedule in_rValue)
-//{
-//	return !(*this <= in_rValue);
-//}
-//
-//Day Schedule::getDay()
-//{
-//	return _day;
-//}
-//
-//ul Schedule::getHour()
-//{
-//	return _hour;
-//}
-//
-//ul Schedule::getMinute()
-//{
-//	return _minute;
-//}
+				tmpTs.end.tm_hour = tmpTs.start.tm_hour + session_duration;
+				allTimeSlot.push_back(tmpTs);
+			}
 
-std::string to_string(Day in_day)
-{
-	static std::string DayName[6] = { "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SUNDAY" };
-	return DayName[(int)in_day];
+			for (ul ulAfternoon = 0; ulAfternoon < tmpDay.nb_session_morning; ulAfternoon++)
+			{
+				// root + week day + startAfternoon + ulAfternoon * durationSession
+				tmpTs.start = root_day;
+				tmpTs.start.tm_hour += tmpDay.start_morning;
+				tmpTs.start.tm_hour += ulAfternoon * session_duration;
+
+				tmpTs.end.tm_hour = tmpTs.start.tm_hour + session_duration;
+				allTimeSlot.push_back(tmpTs);
+			}
+		}
+	}
+
+
+
+	int encode(tm timeToEncode)
+	{
+		int out_value;
+		out_value = timeToEncode.tm_yday * 24 * 60;
+		out_value += timeToEncode.tm_hour * 60;
+		out_value += timeToEncode.tm_min;
+		return out_value;
+	}
+
+
+	int time_slot::_encode()
+	{
+		int encoded = encode(start) + encode(end);
+		encoded *= 0.5;
+		return encoded;
+	}
+
+	bool time_slot::operator==(time_slot in_rValue)
+	{
+
+		return _encode() == in_rValue._encode();
+	}
+
+	bool time_slot::operator<=(time_slot in_rValue)
+	{
+		return _encode() <= in_rValue._encode();
+	}
+
+	bool time_slot::operator>=(time_slot in_rValue)
+	{
+		return _encode() >= in_rValue._encode();
+	}
+
+	bool time_slot::operator<(time_slot in_rValue)
+	{
+		return !(*this >= in_rValue);
+	}
+
+	bool time_slot::operator>(time_slot in_rValue)
+	{
+		return !(*this <= in_rValue);
+	}
 }

@@ -9,7 +9,7 @@
 struct Slot
 {
 	Room &room;
-	Schedule &schedule;
+	Schedule::time_slot &ts;
 
 	Slot *next = nullptr;
 };
@@ -25,7 +25,7 @@ public:
 
 private:
 	std::map<Room, std::vector<std::reference_wrapper<Slot> >> _slotsByRoom;
-	std::map<Schedule, std::vector<std::reference_wrapper<Slot> >> _slotsBySchedule;
+	std::map<Schedule::time_slot, std::vector<std::reference_wrapper<Slot> >> _slotsBySchedule;
 	std::vector<Slot> _allSlots;
 };
 
