@@ -34,7 +34,7 @@ using namespace std;
 int main()
 {
 	//testBuildingRegularCalendar();
-
+	//Schedule::buildAllTimeSlots();
 
     return 0;
 }

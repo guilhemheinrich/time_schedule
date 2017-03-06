@@ -13,14 +13,16 @@ struct Room
 {
 	Room(std::string in_name);
 
-	// For using Room as Key
-	bool operator==(Room in_rValue);
-	bool operator<=(Room in_rValue);
-	bool operator>=(Room in_rValue);
-	bool operator<(Room in_rValue);
-	bool operator>(Room in_rValue);
+
 
 	std::string _name;
 };
 
+// For using Room as Key
+
+bool operator==(const Room &in_lValue, const Room &in_rValue);
+bool operator<=(const Room &in_lValue, const Room &in_rValue);
+bool operator>=(const Room &in_lValue, const Room &in_rValue);
+bool operator<(const Room &in_lValue, const Room &in_rValue);
+bool operator>(const Room &in_lValue, const Room &in_rValue);
 #endif // ROOM_H

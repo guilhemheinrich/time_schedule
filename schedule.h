@@ -20,8 +20,13 @@
 //testtm.tm_isdst = 1; // hours of daylight savings time
 namespace Schedule
 {
+	// First day of the year
 	static tm root_day;
+
+	// duratiion of a session (time slot), in hour
 	static int session_duration = 1;
+
+	// struct carrying time schedule of a day
 	struct day
 	{
 		int start_morning = 8;
@@ -30,23 +35,25 @@ namespace Schedule
 		ul nb_session_afternoon = 4;
 	};
 
+	// representation of a week as a time schedule
 	static day week[6];
 
-
+	// struct carrying time slot
 	struct time_slot
 	{
 		tm start;
 		tm end;
 
-		bool operator==(time_slot in_rValue);
-		bool operator<=(time_slot in_rValue);
-		bool operator>=(time_slot in_rValue);
-		bool operator<(time_slot in_rValue);
-		bool operator>(time_slot in_rValue);
-
+		const double _encode() const;
 	private:
-		int _encode();
+		// used internally to compare time slot
 	};
+
+	bool operator==(const time_slot &in_lValue, const time_slot &in_rValue);
+	bool operator<=(const time_slot &in_lValue, const time_slot &in_rValue);
+	bool operator>=(const time_slot &in_lValue, const time_slot &in_rValue);
+	bool operator<(const time_slot &in_lValue, const time_slot &in_rValue);
+	bool operator>(const time_slot &in_lValue, const time_slot &in_rValue);
 
 	static std::vector<time_slot> allTimeSlot;
 	void buildAllTimeSlots();

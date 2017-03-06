@@ -8,6 +8,7 @@
 #include "schedule.h"
 struct Slot
 {
+	Slot(Room &in_room, Schedule::time_slot in_ts);
 	Room &room;
 	Schedule::time_slot &ts;
 
@@ -21,9 +22,12 @@ public:
 	Calendar(std::vector<Slot>);
 	~Calendar();
 
-
+	int buildAllSlots();
 
 private:
+	std::vector<Schedule::time_slot> _allTimeSlots;
+	std::vector<Room> _allRooms;
+
 	std::map<Room, std::vector<std::reference_wrapper<Slot> >> _slotsByRoom;
 	std::map<Schedule::time_slot, std::vector<std::reference_wrapper<Slot> >> _slotsBySchedule;
 	std::vector<Slot> _allSlots;

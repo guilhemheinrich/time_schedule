@@ -46,36 +46,47 @@ namespace Schedule
 	}
 
 
-	int time_slot::_encode()
+	const double time_slot::_encode() const
 	{
-		int encoded = encode(start) + encode(end);
+		double encoded = encode(start) + encode(end);
 		encoded *= 0.5;
 		return encoded;
 	}
 
-	bool time_slot::operator==(time_slot in_rValue)
+	bool operator==(const time_slot &in_lValue, const time_slot &in_rValue)
 	{
-
-		return _encode() == in_rValue._encode();
+		if (in_lValue.start.tm_yday == in_rValue.start.tm_yday &&
+			in_lValue.start.tm_hour == in_rValue.start.tm_hour &&
+			in_lValue.start.tm_min == in_rValue.start.tm_min &&
+			in_lValue.end.tm_yday == in_rValue.end.tm_yday &&
+			in_lValue.end.tm_hour == in_rValue.end.tm_hour &&
+			in_lValue.end.tm_min == in_rValue.end.tm_min)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
-	bool time_slot::operator<=(time_slot in_rValue)
+	bool operator<=(const time_slot &in_lValue, const time_slot  &in_rValue)
 	{
-		return _encode() <= in_rValue._encode();
+		return in_lValue._encode() <= in_rValue._encode();
 	}
 
-	bool time_slot::operator>=(time_slot in_rValue)
+	bool operator>=(const time_slot &in_lValue, const time_slot  &in_rValue)
 	{
-		return _encode() >= in_rValue._encode();
+		return in_lValue._encode() >= in_rValue._encode();
 	}
 
-	bool time_slot::operator<(time_slot in_rValue)
+	bool operator<(const time_slot &in_lValue, const time_slot &in_rValue)
 	{
-		return !(*this >= in_rValue);
+		return !(in_lValue >= in_rValue);
 	}
 
-	bool time_slot::operator>(time_slot in_rValue)
+	bool operator>(const time_slot &in_lValue, const time_slot &in_rValue)
 	{
-		return !(*this <= in_rValue);
+		return !(in_lValue <= in_rValue);
 	}
 }

@@ -5,27 +5,27 @@ Room::Room(std::string in_name):
 {
 }
 
-bool Room::operator==(Room in_rValue)
+bool operator==(const Room &in_lValue, const Room &in_rValue)
 {
-	return _name == in_rValue._name;
+	return in_lValue._name == in_rValue._name;
 }
 
-bool Room::operator<=(Room in_rValue)
+bool operator<=(const Room &in_lValue, const Room &in_rValue)
 {
-	return _name <= in_rValue._name;
+	return in_lValue._name <= in_rValue._name;
 }
 
-bool Room::operator>=(Room in_rValue)
+bool operator>=(const Room &in_lValue, const Room &in_rValue)
 {
-	return _name >= in_rValue._name;
+	return in_lValue._name >= in_rValue._name;
 }
 
-bool Room::operator<(Room in_rValue)
+bool operator<(const Room &in_lValue, const Room &in_rValue)
 {
-	return !(*this >= in_rValue);
+	return !(in_lValue >= in_rValue);
 }
 
-bool Room::operator>(Room in_rValue)
+bool operator>(const Room &in_lValue, const Room &in_rValue)
 {
-	return !(*this <= in_rValue);
+	return !(in_lValue <= in_rValue);
 }
