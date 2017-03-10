@@ -5,6 +5,7 @@
 #include <map>
 #include <functional>
 #include "IncludedHeaders.h"
+#include "teacher.h"
 struct hourObjectiveAndFill
 {
 	ul objective;
@@ -14,13 +15,19 @@ struct hourObjectiveAndFill
 class Class
 {
 public:
-	Class(std::string in_name, std::map<Subject, hourObjectiveAndFill > in_subjectsAndRequirements);
+	Class(std::string in_name, std::map<Subject, ul > in_subjectsAndRequirements);
 	//Class(ul in_ID);
+
+	void setTeacherForSubject(Subject in_subjct, Teacher* in_pTeacher);
+	void setSubjectAndRequirement(Subject in_subjct, hourObjectiveAndFill in_objectiveAndFill);
+
+	std::map <Subject, Teacher*> getTeachers() const;
+	std::map<Subject, hourObjectiveAndFill > getSubjectAndRequirements() const;
 private:
-	//static ul _cpt;
-	//static std::vector<std::reference_wrapper<Class>> _allClass;
+
 	std::string _name;
 	std::map<Subject, hourObjectiveAndFill > _subjectsAndRequirements;
+	std::map <Subject, Teacher*> _dedicatedTeacher;
 };
 
 #endif // CLASS_H

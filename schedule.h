@@ -10,12 +10,12 @@
 // test de ctime
 //tm testtm;
 //testtm.tm_sec = 1;   // seconds of minutes from 0 to 61
-//testtm.tm_min = 1;   // minutes of hour from 0 to 59
-//testtm.tm_hour = 1;  // hours of day from 0 to 24
+//testtm.tm_min = 0;   // minutes of hour from 0 to 59
+//testtm.tm_hour = 0;  // hours of day from 0 to 24
 //testtm.tm_mday = 1;  // day of month from 1 to 31
 //testtm.tm_mon = 1;   // month of year from 0 to 11
 //testtm.tm_year = 1;  // year since 1900
-//testtm.tm_wday = 1;  // days since sunday
+//testtm.tm_wday = 2;  // days since sunday
 //testtm.tm_yday = 1;  // days since January 1st
 //testtm.tm_isdst = 1; // hours of daylight savings time
 namespace Schedule
@@ -23,7 +23,8 @@ namespace Schedule
 	// First day of the year
 	static tm root_day;
 
-	// duratiion of a session (time slot), in hour
+	void initalizeRootDay(tm in_rootDay);
+	// duration of a session (time slot), in hour
 	static int session_duration = 1;
 
 	// struct carrying time schedule of a day
@@ -55,8 +56,8 @@ namespace Schedule
 	bool operator<(const time_slot &in_lValue, const time_slot &in_rValue);
 	bool operator>(const time_slot &in_lValue, const time_slot &in_rValue);
 
-	static std::vector<time_slot> allTimeSlot;
-	void buildAllTimeSlots();
+
+	std::vector<time_slot> buildAllTimeSlots();
 
 	int encode(tm timeToEncode);
 	bool checkInTimeInterval(tm timeToCheck, tm start, tm end);

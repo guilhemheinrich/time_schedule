@@ -6,7 +6,7 @@
 struct Teacher
 {
 public:
-	Teacher();
+
 	Teacher(std::string in_name);
 
 	std::string _name;
