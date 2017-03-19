@@ -21,28 +21,40 @@ namespace Schedule
 		std::vector<time_slot> out_vTimeSlots;
 		for (ul ulDayCpt = 0; ulDayCpt < 6; ulDayCpt++)
 		{
-			day tmpDay = week[ulDayCpt];
+			session tmpDay = week[ulDayCpt];
 			time_slot tmpTs;
-			for (ul ulMorning = 0; ulMorning < tmpDay.nb_session_morning; ulMorning++)
+			//for (ul ulMorning = 0; ulMorning < tmpDay.nb_session_morning; ulMorning++)
+			//{
+			//	// root + week day + startMorning + ulMorning * durationSession
+			//	tmpTs.start = root_day;
+			//	tmpTs.start.tm_hour += tmpDay.start_morning;
+			//	tmpTs.start.tm_hour += ulMorning * session_duration;
+
+			//	tmpTs.end = tmpTs.start;
+			//	tmpTs.end.tm_hour = tmpTs.start.tm_hour + session_duration;
+			//	out_vTimeSlots.push_back(tmpTs);
+			//}
+
+			//for (ul ulAfternoon = 0; ulAfternoon < tmpDay.nb_session_morning; ulAfternoon++)
+			//{
+			//	// root + week day + startAfternoon + ulAfternoon * durationSession
+			//	tmpTs.start = root_day;
+			//	tmpTs.start.tm_hour += tmpDay.start_afternoon;
+			//	tmpTs.start.tm_hour += ulAfternoon * session_duration;
+
+			//	tmpTs.end.tm_hour = tmpTs.start.tm_hour + session_duration;
+			//	out_vTimeSlots.push_back(tmpTs);
+			//}
+
+			for (ul ulCpt = 0; ulCpt < tmpDay.end - tmpDay.start; ulCpt++)
 			{
 				// root + week day + startMorning + ulMorning * durationSession
 				tmpTs.start = root_day;
-				tmpTs.start.tm_hour += tmpDay.start_morning;
-				tmpTs.start.tm_hour += ulMorning * session_duration;
+				tmpTs.start.tm_hour += tmpDay.start;
+				tmpTs.start.tm_hour += ulCpt;
 
 				tmpTs.end = tmpTs.start;
-				tmpTs.end.tm_hour = tmpTs.start.tm_hour + session_duration;
-				out_vTimeSlots.push_back(tmpTs);
-			}
-
-			for (ul ulAfternoon = 0; ulAfternoon < tmpDay.nb_session_morning; ulAfternoon++)
-			{
-				// root + week day + startAfternoon + ulAfternoon * durationSession
-				tmpTs.start = root_day;
-				tmpTs.start.tm_hour += tmpDay.start_afternoon;
-				tmpTs.start.tm_hour += ulAfternoon * session_duration;
-
-				tmpTs.end.tm_hour = tmpTs.start.tm_hour + session_duration;
+				tmpTs.end.tm_hour = tmpTs.start.tm_hour + 1;
 				out_vTimeSlots.push_back(tmpTs);
 			}
 		}

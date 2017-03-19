@@ -111,9 +111,11 @@ int main()
 
 	for (auto pClass : allClasses)
 	{
-		for (auto subject : p)
-		pClass->setTeacherForSubject
-
+		pClass->setTeacherForSubject(Subject::MATH, tMath);
+		pClass->setTeacherForSubject(Subject::FRENCH, tFrench);
+		pClass->setTeacherForSubject(Subject::HISTORY, tHistory);
+		pClass->setTeacherForSubject(Subject::SPORT, tSport);
+		pClass->setTeacherForSubject(Subject::ENGLISH, tEnglish);
 	}
 
 	cin.get();

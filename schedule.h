@@ -25,19 +25,21 @@ namespace Schedule
 
 	void initalizeRootDay(tm in_rootDay);
 	// duration of a session (time slot), in hour
-	static int session_duration = 1;
+	//static int session_duration = 1;
 
-	// struct carrying time schedule of a day
-	struct day
+	// struct carrying time schedule of a session
+	struct session
 	{
-		int start_morning = 8;
-		ul nb_session_morning = 4;
-		int start_afternoon = 13;
-		ul nb_session_afternoon = 4;
+		//int start_morning = 8;
+		//ul nb_session_morning = 4;
+		//int start_afternoon = 13;
+		//ul nb_session_afternoon = 4;
+		int start = 8;
+		int end = 18;
 	};
 
 	// representation of a week as a time schedule
-	static day week[6];
+	static session week[6];
 
 	// struct carrying time slot
 	struct time_slot
