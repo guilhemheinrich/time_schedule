@@ -6,13 +6,15 @@
 #include <functional>
 #include "IncludedHeaders.h"
 #include "teacher.h"
+#include "TimeScheduleEntity.h"
+
 struct hourObjectiveAndFill
 {
 	ul objective;
 	ul fill = 0;
 };
 
-class Class
+class Class : TimeScheduleEntity
 {
 public:
 	Class(std::string in_name, std::map<Subject, ul > in_subjectsAndRequirements);

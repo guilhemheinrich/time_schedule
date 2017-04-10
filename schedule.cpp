@@ -46,11 +46,14 @@ namespace Schedule
 			//	out_vTimeSlots.push_back(tmpTs);
 			//}
 
-			for (ul ulCpt = 0; ulCpt < tmpDay.end - tmpDay.start; ulCpt++)
+			for (ul ulCpt = 0; ulCpt < tmpDay.hourDuration; ulCpt++)
 			{
 				// root + week day + startMorning + ulMorning * durationSession
-				tmpTs.start = root_day;
-				tmpTs.start.tm_hour += tmpDay.start;
+				tmpTs.start = tmpDay.start;
+				tmpTs.start.tm_yday = tmpDay.start.tm_yday + ulDayCpt;
+				tmpTs.start.tm_mday = tmpDay.start.tm_mday + ulDayCpt;
+				tmpTs.start.tm_wday = tmpDay.start.tm_wday + ulDayCpt;
+				//tmpTs.start.tm_hour += tmpDay.start;
 				tmpTs.start.tm_hour += ulCpt;
 
 				tmpTs.end = tmpTs.start;

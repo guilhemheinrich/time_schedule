@@ -13,3 +13,14 @@ enum class Subject
 	NATURAL_SCIENCE,
 	SPORT
 };
+
+enum class SessionID
+{
+	MONDAY,
+	TUESDAY,
+	WEDNESDAY,
+	THURDAY,
+	FRIDAY,
+	SATURDAY, 
+	SUNDAY
+};

@@ -20,6 +20,11 @@
 //testtm.tm_isdst = 1; // hours of daylight savings time
 namespace Schedule
 {
+	struct time_slot;
+	struct session;
+
+	template<typename TYPE>
+	class SessionPrototype;
 	// First day of the year
 	static tm root_day;
 
@@ -30,12 +35,24 @@ namespace Schedule
 	// struct carrying time schedule of a session
 	struct session
 	{
-		//int start_morning = 8;
-		//ul nb_session_morning = 4;
-		//int start_afternoon = 13;
-		//ul nb_session_afternoon = 4;
-		int start = 8;
-		int end = 18;
+		tm start;
+		ul hourDuration;
+		//int start = 8;
+		//int end = 18;
+	};
+
+	template<typename TYPE>
+	class SessionPrototype
+	{
+	public:
+		SessionPrototype(ul in_ulSessionDuration, tm in_tmStart);
+
+		void set(ul in_ulIndex, TYPE *in_newValue);
+		const ul size() const;
+		const std::pair<time_slot, TYPE*>& operator[](ul in_ulIndex) const;
+	private:
+		std::vector<std::pair<time_slot, TYPE*> > _content;
+
 	};
 
 	// representation of a week as a time schedule
@@ -63,6 +80,39 @@ namespace Schedule
 
 	int encode(tm timeToEncode);
 	bool checkInTimeInterval(tm timeToCheck, tm start, tm end);
+
+	template<typename TYPE>
+	inline SessionPrototype<TYPE>::SessionPrototype(ul in_ulSessionDuration, tm in_tmStart)
+	{
+		for (ul ulCpt = 0; ulCpt < in_ulSessionDuration; ulCpt++)
+		{
+			tm tmpTm;
+
+			tmpTm = in_tmStart;
+			tmpTm.tm_hour += ulCpt;
+
+			_content.push_back(std::pair<tmpTm, TYPE*>(tmpTm, nullptr));
+		}
+	}
+	template<typename TYPE>
+	inline void SessionPrototype<TYPE>::set(ul in_ulIndex, TYPE * in_newValue)
+	{
+		_content[in_ulIndex] = in_newValue;
+	}
+
+	template<typename TYPE>
+	inline const ul SessionPrototype<TYPE>::size() const
+	{
+		return _content.size();
+	}
+
+	template<typename TYPE>
+	inline const std::pair<time_slot, TYPE*>& SessionPrototype<TYPE>::operator[](ul in_ulIndex) const
+	{
+		return _content[in_ulIndex];
+	}
+
+
 }
 
 #endif // SCHEDULE_H

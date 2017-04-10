@@ -7,8 +7,10 @@
 #include "Calendar.h"
 #include "class.h"
 #include "teacher.h"
+#include "mapper.h"
 #include <iostream>
 #include <ctime>
+#include <algorithm>
 using namespace std;
 
 //void testBuildingRegularCalendar()
@@ -47,9 +49,9 @@ int main()
 	root_day.tm_min = 0;   // minutes of hour from 0 to 59
 	root_day.tm_hour = 0;  // hours of day from 0 to 24
 	root_day.tm_mday = 1;  // day of month from 1 to 31
-	root_day.tm_mon = 1;   // month of year from 0 to 11
+	root_day.tm_mon = 0;   // month of year from 0 to 11
 	root_day.tm_year = 1;  // year since 1900
-	root_day.tm_wday = 2;  // days since sunday
+	root_day.tm_wday = 1;  // days since sunday
 	root_day.tm_yday = 1;  // days since January 1st
 	root_day.tm_isdst = 1; // hours of daylight savings time
 
@@ -86,14 +88,15 @@ int main()
 
 	// Creating the classes and teachers
 
-	Teacher * tMath = new Teacher("tMath");
-	Teacher * tFrench= new Teacher("tFrench");
-	Teacher * tHistory= new Teacher("tHistory");
-	Teacher * tSport= new Teacher("tSport");
-	Teacher * tEnglish = new Teacher("tEnglish");
+	Teacher * tMath = new Teacher("tMath", Subject::MATH);
+	Teacher * tFrench= new Teacher("tFrench", Subject::FRENCH);
+	Teacher * tHistory= new Teacher("tHistory", Subject::HISTORY);
+	Teacher * tSport= new Teacher("tSport", Subject::SPORT);
+	Teacher * tEnglish = new Teacher("tEnglish", Subject::ENGLISH);
 
 	// Class schedule
 
+	// Création des classes
 	std::map<Subject, ul > standardClass;
 	standardClass[Subject::MATH] = 4;
 	standardClass[Subject::FRENCH] = 4;
@@ -109,6 +112,7 @@ int main()
 	allClasses.push_back(c2);
 	allClasses.push_back(c3);
 
+	// Association des professuers
 	for (auto pClass : allClasses)
 	{
 		pClass->setTeacherForSubject(Subject::MATH, tMath);
@@ -116,6 +120,34 @@ int main()
 		pClass->setTeacherForSubject(Subject::HISTORY, tHistory);
 		pClass->setTeacherForSubject(Subject::SPORT, tSport);
 		pClass->setTeacherForSubject(Subject::ENGLISH, tEnglish);
+	}
+
+	// Première génération
+
+	//// Shuffle all slots
+	//random_shuffle(allSlots.begin(), allSlots.end());
+
+	//// Check the shuffling
+	//for (auto slot : allSlots)
+	//{
+	//	const tm* tmpTm = &(slot->ts.start);
+	//	cout << "Shuffling" << endl;
+	//	strftime(buffer, sizeof(buffer), "%d-%m-%Y %I:%M:%S", tmpTm);
+	//	std::string str(buffer);
+	//	cout << "Room : " << slot->room._name << endl;
+	//	cout << "ts start : " << str << endl;
+	//	tmpTm = &(slot->ts.end);
+	//	strftime(buffer, sizeof(buffer), "%d-%m-%Y %I:%M:%S", tmpTm);
+	//	str = buffer;
+	//	cout << "ts end : " << str << endl;
+	//}
+
+	// Set the mapping function, 
+	std::map<Schedule::time_slot, std::vector<Slot*> > mapTS = mapper::reducer<Schedule::time_slot>(allSlots);
+
+	for (auto pClass : allClasses)
+	{
+
 	}
 
 	cin.get();
