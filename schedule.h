@@ -36,7 +36,7 @@ namespace Schedule
 	struct session
 	{
 		tm start;
-		ul hourDuration;
+		ul hourDuration = 8;
 		//int start = 8;
 		//int end = 18;
 	};
@@ -55,8 +55,7 @@ namespace Schedule
 
 	};
 
-	// representation of a week as a time schedule
-	static session week[6];
+
 
 	// struct carrying time slot
 	struct time_slot
@@ -76,7 +75,7 @@ namespace Schedule
 	bool operator>(const time_slot &in_lValue, const time_slot &in_rValue);
 
 
-	std::vector<time_slot> buildAllTimeSlots();
+	std::vector<time_slot> buildAllTimeSlots(std::vector<session> in_session_template);
 
 	int encode(tm timeToEncode);
 	bool checkInTimeInterval(tm timeToCheck, tm start, tm end);

@@ -10,6 +10,7 @@ namespace mapper
 		std::pair<Schedule::time_slot, Slot*> out_result;
 		out_result.first = in_slot->ts;
 		out_result.second = in_slot;
+		return out_result;
 	}
 
 	template<>

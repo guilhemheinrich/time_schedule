@@ -56,8 +56,11 @@ int main()
 	root_day.tm_isdst = 1; // hours of daylight savings time
 
 	Schedule::initalizeRootDay(root_day);
+	// representation of a week as a time schedule
+	std::vector<Schedule::session> sessions_template;
+	
 
-	std::vector<Schedule::time_slot> allTimeSlot = Schedule::buildAllTimeSlots();
+	std::vector<Schedule::time_slot> allTimeSlot = Schedule::buildAllTimeSlots(sessions_template);
 	Room room1(std::string("r1"));
 	Room room2(std::string("r2"));
 	std::vector<Room> allRoom;
@@ -145,7 +148,7 @@ int main()
 	// Set the mapping function, 
 	std::map<Schedule::time_slot, std::vector<Slot*> > mapTS = mapper::reducer<Schedule::time_slot>(allSlots);
 
-	for (auto pClass : allClasses)
+	for (auto pairTSvpSlot : mapTS)
 	{
 
 	}

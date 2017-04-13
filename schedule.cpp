@@ -16,12 +16,12 @@ namespace Schedule
 		root_day.tm_isdst = in_rootDay.tm_isdst;
 	}
 
-	std::vector<time_slot> buildAllTimeSlots()
+	std::vector<time_slot> buildAllTimeSlots(std::vector<session> in_session_template)
 	{
 		std::vector<time_slot> out_vTimeSlots;
-		for (ul ulDayCpt = 0; ulDayCpt < 6; ulDayCpt++)
+		for (ul ulDayCpt = 0; ulDayCpt < in_session_template.size(); ulDayCpt++)
 		{
-			session tmpDay = week[ulDayCpt];
+			session tmpDay = in_session_template[ulDayCpt];
 			time_slot tmpTs;
 			//for (ul ulMorning = 0; ulMorning < tmpDay.nb_session_morning; ulMorning++)
 			//{
@@ -120,5 +120,10 @@ namespace Schedule
 	bool operator>(const time_slot &in_lValue, const time_slot &in_rValue)
 	{
 		return !(in_lValue <= in_rValue);
+	}
+
+	session::session(tm in_start, ul in_hourDuration):
+		start(in_start), hourDuration(in_hourDuration)
+	{ 
 	}
 }
