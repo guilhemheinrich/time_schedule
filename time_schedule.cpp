@@ -59,6 +59,17 @@ int main()
 	// representation of a week as a time schedule
 	std::vector<Schedule::session> sessions_template;
 	
+	// Let's build 6 days, starting from the root day, from 8 am to 4pm (8 hours long)
+
+	for (ul ulCpt = 0; ulCpt < 6; ulCpt++)
+	{
+		tm tmStartDay = root_day;
+		tmStartDay.tm_yday += ulCpt;
+		tmStartDay.tm_mday += ulCpt;
+		tmStartDay.tm_wday += ulCpt;
+		sessions_template.push_back(Schedule::session(tmStartDay, 8));
+	}
+
 
 	std::vector<Schedule::time_slot> allTimeSlot = Schedule::buildAllTimeSlots(sessions_template);
 	Room room1(std::string("r1"));

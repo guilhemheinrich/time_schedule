@@ -19,40 +19,16 @@ namespace Schedule
 	std::vector<time_slot> buildAllTimeSlots(std::vector<session> in_session_template)
 	{
 		std::vector<time_slot> out_vTimeSlots;
-		for (ul ulDayCpt = 0; ulDayCpt < in_session_template.size(); ulDayCpt++)
+		for (session sessionTmp : in_session_template)
 		{
-			session tmpDay = in_session_template[ulDayCpt];
 			time_slot tmpTs;
-			//for (ul ulMorning = 0; ulMorning < tmpDay.nb_session_morning; ulMorning++)
-			//{
-			//	// root + week day + startMorning + ulMorning * durationSession
-			//	tmpTs.start = root_day;
-			//	tmpTs.start.tm_hour += tmpDay.start_morning;
-			//	tmpTs.start.tm_hour += ulMorning * session_duration;
 
-			//	tmpTs.end = tmpTs.start;
-			//	tmpTs.end.tm_hour = tmpTs.start.tm_hour + session_duration;
-			//	out_vTimeSlots.push_back(tmpTs);
-			//}
 
-			//for (ul ulAfternoon = 0; ulAfternoon < tmpDay.nb_session_morning; ulAfternoon++)
-			//{
-			//	// root + week day + startAfternoon + ulAfternoon * durationSession
-			//	tmpTs.start = root_day;
-			//	tmpTs.start.tm_hour += tmpDay.start_afternoon;
-			//	tmpTs.start.tm_hour += ulAfternoon * session_duration;
-
-			//	tmpTs.end.tm_hour = tmpTs.start.tm_hour + session_duration;
-			//	out_vTimeSlots.push_back(tmpTs);
-			//}
-
-			for (ul ulCpt = 0; ulCpt < tmpDay.hourDuration; ulCpt++)
+			for (ul ulCpt = 0; ulCpt < sessionTmp.hourDuration; ulCpt++)
 			{
 				// root + week day + startMorning + ulMorning * durationSession
-				tmpTs.start = tmpDay.start;
-				tmpTs.start.tm_yday = tmpDay.start.tm_yday + ulDayCpt;
-				tmpTs.start.tm_mday = tmpDay.start.tm_mday + ulDayCpt;
-				tmpTs.start.tm_wday = tmpDay.start.tm_wday + ulDayCpt;
+				tmpTs.start = sessionTmp.start;
+
 				//tmpTs.start.tm_hour += tmpDay.start;
 				tmpTs.start.tm_hour += ulCpt;
 

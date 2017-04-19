@@ -35,6 +35,7 @@ namespace Schedule
 	// struct carrying time schedule of a session
 	struct session
 	{
+		session(tm in_tmStart, ul in_ulHourDuration);
 		tm start;
 		ul hourDuration = 8;
 		//int start = 8;
