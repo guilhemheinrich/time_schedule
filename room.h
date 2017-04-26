@@ -13,8 +13,6 @@ struct Room
 {
 	Room(std::string in_name);
 
-
-
 	std::string _name;
 };
 

@@ -6,7 +6,7 @@ Calendar::Calendar()
 {
 }
 
-Calendar::Calendar(std::vector<Schedule::time_slot> in_allTimeSlots, std::vector<Room> in_allRooms):
+Calendar::Calendar(std::set<Schedule::time_slot> in_allTimeSlots, std::vector<Room> in_allRooms):
 	_allTimeSlots(in_allTimeSlots), _allRooms(in_allRooms)
 {
 }

@@ -11,6 +11,8 @@ public:
 	Teacher(std::string in_name);
 	Teacher(std::string in_name, Subject in_subject);
 
+	bool addOneHour();
+
 private:
 
 	std::string _name;

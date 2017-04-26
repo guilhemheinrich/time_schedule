@@ -1,5 +1,6 @@
 #include "schedule.h"
 #include <vector>
+#include <set>
 
 namespace Schedule
 {
@@ -16,9 +17,9 @@ namespace Schedule
 		root_day.tm_isdst = in_rootDay.tm_isdst;
 	}
 
-	std::vector<time_slot> buildAllTimeSlots(std::vector<session> in_session_template)
+	std::set<time_slot> buildAllTimeSlots(std::vector<session> in_session_template)
 	{
-		std::vector<time_slot> out_vTimeSlots;
+		std::set<time_slot> out_sTimeSlots;
 		for (session sessionTmp : in_session_template)
 		{
 			time_slot tmpTs;
@@ -34,10 +35,10 @@ namespace Schedule
 
 				tmpTs.end = tmpTs.start;
 				tmpTs.end.tm_hour = tmpTs.start.tm_hour + 1;
-				out_vTimeSlots.push_back(tmpTs);
+				out_sTimeSlots.insert(tmpTs);
 			}
 		}
-		return out_vTimeSlots;
+		return out_sTimeSlots;
 	}
 
 
@@ -50,6 +51,8 @@ namespace Schedule
 		out_value += timeToEncode.tm_min;
 		return out_value;
 	}
+
+
 
 
 	const double time_slot::_encode() const
@@ -101,5 +104,38 @@ namespace Schedule
 	session::session(tm in_start, ul in_hourDuration):
 		start(in_start), hourDuration(in_hourDuration)
 	{ 
+		//_ID = std::to_string(in_start.tm_year) + "_" + std::to_string(in_start.tm_yday) + "_" + std::to_string(in_start.tm_hour) + "x" + std::to_string(in_hourDuration);
 	}
+
+	//bool operator==(const session &in_lValue, const session &in_rValue)
+	//{
+	//	if (in_lValue._ID == in_rValue._ID)
+	//	{
+	//		return true;
+	//	}
+	//	else
+	//	{
+	//		return false;
+	//	}
+	//}
+
+	//bool operator<=(const session &in_lValue, const session  &in_rValue)
+	//{
+	//	return in_lValue._ID <= in_rValue._ID;
+	//}
+
+	//bool operator>=(const session &in_lValue, const session  &in_rValue)
+	//{
+	//	return in_lValue._ID >= in_rValue._ID;
+	//}
+
+	//bool operator<(const session &in_lValue, const session &in_rValue)
+	//{
+	//	return !(in_lValue >= in_rValue);
+	//}
+
+	//bool operator>(const session &in_lValue, const session &in_rValue)
+	//{
+	//	return !(in_lValue <= in_rValue);
+	//}
 }

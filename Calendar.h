@@ -1,11 +1,13 @@
 #pragma once
 
 #include <vector>
+#include <set>
 #include <map>
 #include <functional>
 
 #include "room.h"
 #include "schedule.h"
+
 struct Slot
 {
 	Slot(Room in_room, Schedule::time_slot in_ts);
@@ -19,7 +21,7 @@ class Calendar
 {
 public:
 	Calendar();
-	Calendar(std::vector<Schedule::time_slot> in_allTimeSlots, std::vector<Room> in_allRooms);
+	Calendar(std::set<Schedule::time_slot> in_allTimeSlots, std::vector<Room> in_allRooms);
 	~Calendar();
 
 	int buildAllSlots();
@@ -29,7 +31,7 @@ public:
 	const std::vector<Slot*> getSlotsBySchedule(Schedule::time_slot in_ts) const;
 
 private:
-	std::vector<Schedule::time_slot> _allTimeSlots;
+	std::set<Schedule::time_slot> _allTimeSlots;
 	std::vector<Room> _allRooms;
 
 	std::map<Room, std::vector<Slot*>> _slotsByRoom;

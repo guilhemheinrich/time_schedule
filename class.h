@@ -18,13 +18,18 @@ class Class : TimeScheduleEntity
 {
 public:
 	Class(std::string in_name, std::map<Subject, ul > in_subjectsAndRequirements);
-	//Class(ul in_ID);
 
-	void setTeacherForSubject(Subject in_subjct, Teacher* in_pTeacher);
-	void setSubjectAndRequirement(Subject in_subjct, hourObjectiveAndFill in_objectiveAndFill);
+	std::string getName() const;
+
+	void setTeacherForSubject(Subject in_subject, Teacher* in_pTeacher);
+	void setSubjectAndRequirement(Subject in_subject, hourObjectiveAndFill in_objectiveAndFill);
+
+	bool addOneHour(Subject in_subject);
 
 	std::map <Subject, Teacher*> getTeachers() const;
 	std::map<Subject, hourObjectiveAndFill > getSubjectAndRequirements() const;
+	
+	std::vector<Subject> notFilledObjective();
 private:
 
 	std::string _name;

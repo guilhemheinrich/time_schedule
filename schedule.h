@@ -76,7 +76,7 @@ namespace Schedule
 	bool operator>(const time_slot &in_lValue, const time_slot &in_rValue);
 
 
-	std::vector<time_slot> buildAllTimeSlots(std::vector<session> in_session_template);
+	std::set<time_slot> buildAllTimeSlots(std::vector<session> in_session_template);
 
 	int encode(tm timeToEncode);
 	bool checkInTimeInterval(tm timeToCheck, tm start, tm end);
