@@ -14,6 +14,7 @@ bool Teacher::addOneHour(Slot* in_slot)
 	else
 	{
 		_hourGiven++;
+		add(in_slot);
 		return true;
 	}
 }

@@ -223,6 +223,7 @@ int main()
 
 		// Do the stuff accordingly
 		// Class & teacher
+		
 		if (pCurrentClass->addOneHour(availableSlots[ulPickedSlot], availableSubjects[ulPickedSubject]))
 		{			
 			//cout << "hour added" << endl;

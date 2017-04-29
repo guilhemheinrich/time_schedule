@@ -27,8 +27,8 @@ namespace Schedule
 
 			for (ul ulCpt = 0; ulCpt < sessionTmp.hourDuration(); ulCpt++)
 			{
-				// Keep track of the seeison for further identification
-				tmpTs.session = &sessionTmp;
+				// Keep track of the session for further identification
+				tmpTs.session = sessionTmp;
 
 				// root + week day + startMorning + ulMorning * durationSession
 				tmpTs.start = sessionTmp.start();

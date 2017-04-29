@@ -80,6 +80,10 @@ namespace Schedule
 		const ul size() const;
 		const std::pair<time_slot, TYPE*>& operator[](time_slot in_timeSlot) const;
 
+		const std::map<time_slot, TYPE* > getContent() const;
+		std::map<time_slot, TYPE* > getContent();
+
+
 		//std::map<time_slot, TYPE*>::iterator begin();
 		//std::map<time_slot, TYPE*>::iterator end();
 
@@ -98,7 +102,7 @@ namespace Schedule
 	// struct carrying time slot
 	struct time_slot
 	{
-		session* session = nullptr;
+		session session;
 		tm start;
 		tm end;
 
@@ -162,7 +166,7 @@ namespace Schedule
 	//}
 
 	//template<typename TYPE>
-	//inline std::map<time_slot, TYPE*>::const_iterator SessionPrototype<TYPE>::end(SessionPrototype<TYPE> &in_sessionPrototype)
+	//inline std::map<time_slot, TYPE*>::const_iterator end(SessionPrototype<TYPE> &in_sessionPrototype)
 	//{
 	//	return in_sessionPrototype._content.end();
 	//}
@@ -211,6 +215,18 @@ namespace Schedule
 	inline const std::pair<time_slot, TYPE*>& SessionPrototype<TYPE>::operator[](time_slot in_timeSlot) const
 	{
 		return _content.at(in_timeSlot);
+	}
+
+	template<typename TYPE>
+	inline const std::map<time_slot, TYPE*> SessionPrototype<TYPE>::getContent() const
+	{
+		return _content;
+	}
+
+	template<typename TYPE>
+	inline std::map<time_slot, TYPE*> SessionPrototype<TYPE>::getContent()
+	{
+		return _content;
 	}
 
 

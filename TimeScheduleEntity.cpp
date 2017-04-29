@@ -23,6 +23,12 @@ TimeScheduleEntity::~TimeScheduleEntity()
 {
 }
 
+void TimeScheduleEntity::add(Slot * in_slot)
+{
+	Schedule::session sessionTmp = in_slot->ts.session;
+	_allSlotsPerSessions[sessionTmp].at(in_slot->ts, in_slot);
+}
+
 double TimeScheduleEntity::score()
 {
 	double dScore = 0;
@@ -36,26 +42,25 @@ double TimeScheduleEntity::score()
 	};
 	for (auto pSessionAndSlots : _allSlotsPerSessions)
 	{
-		auto sessionSlots = pSessionAndSlots.second;
+		auto sessionContent = pSessionAndSlots.second.getContent();
 		bool activated = false;
 		ul start, end;
 		ul ulRunningIndex = 0;
-		//for (auto pTimeSlotAndSlot : sessionSlots)
-		//{
-
-		//	// start is the first used slot
-		//	if (pTimeSlotAndSlot.second != nullptr && activated == false)
-		//	{
-		//		activated = true;
-		//		start = ulRunningIndex;
-		//		end = ulRunningIndex;
-		//	}
-		//	if (activated && pTimeSlotAndSlot.second != nullptr)
-		//	{
-		//		end = ulRunningIndex;
-		//	}
-		//}
-		//dScore += fSum(sessionSlots.size() - (end - start));
+		for (auto pTimeSlotAndSlot : sessionContent)
+		{
+			// start is the first used slot
+			if (pTimeSlotAndSlot.second != nullptr && activated == false)
+			{
+				activated = true;
+				start = ulRunningIndex;
+				end = ulRunningIndex;
+			}
+			if (activated && pTimeSlotAndSlot.second != nullptr)
+			{
+				end = ulRunningIndex;
+			}
+		}
+		dScore += fSum(sessionContent.size() - (end - start));
 	}
 	return dScore;
 }

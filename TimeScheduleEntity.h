@@ -15,7 +15,7 @@ public:
 	TimeScheduleEntity(std::vector<Schedule::session> in_allSessions);
 	~TimeScheduleEntity();
 
-
+	void add(Slot* in_slot);
 	// Return the score
 	virtual double score();
 
