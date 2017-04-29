@@ -25,10 +25,13 @@ namespace Schedule
 			time_slot tmpTs;
 
 
-			for (ul ulCpt = 0; ulCpt < sessionTmp.hourDuration; ulCpt++)
+			for (ul ulCpt = 0; ulCpt < sessionTmp.hourDuration(); ulCpt++)
 			{
+				// Keep track of the seeison for further identification
+				tmpTs.session = &sessionTmp;
+
 				// root + week day + startMorning + ulMorning * durationSession
-				tmpTs.start = sessionTmp.start;
+				tmpTs.start = sessionTmp.start();
 
 				//tmpTs.start.tm_hour += tmpDay.start;
 				tmpTs.start.tm_hour += ulCpt;
@@ -101,41 +104,81 @@ namespace Schedule
 		return !(in_lValue <= in_rValue);
 	}
 
-	session::session(tm in_start, ul in_hourDuration):
-		start(in_start), hourDuration(in_hourDuration)
-	{ 
-		//_ID = std::to_string(in_start.tm_year) + "_" + std::to_string(in_start.tm_yday) + "_" + std::to_string(in_start.tm_hour) + "x" + std::to_string(in_hourDuration);
+	session::session()
+	{
+		_ID ="DEFAULT";
+
 	}
 
-	//bool operator==(const session &in_lValue, const session &in_rValue)
+	session::session(tm in_start, ul in_hourDuration):
+		_start(in_start), _hourDuration(in_hourDuration)
+	{ 
+		_ID = std::to_string(in_start.tm_year) + "_" + std::to_string(in_start.tm_yday) + "_" + std::to_string(in_start.tm_hour) + "x" + std::to_string(in_hourDuration);
+	}
+
+	tm session::start() const
+	{
+		return _start;
+	}
+
+	ul session::hourDuration() const
+	{
+		return _hourDuration;
+	}
+
+	bool operator==(const session &in_lValue, const session &in_rValue)
+	{
+		if (in_lValue._ID == in_rValue._ID)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	bool operator<=(const session &in_lValue, const session  &in_rValue)
+	{
+		return in_lValue._ID <= in_rValue._ID;
+	}
+
+	bool operator>=(const session &in_lValue, const session  &in_rValue)
+	{
+		return in_lValue._ID >= in_rValue._ID;
+	}
+
+	bool operator<(const session &in_lValue, const session &in_rValue)
+	{
+		return !(in_lValue >= in_rValue);
+	}
+
+	bool operator>(const session &in_lValue, const session &in_rValue)
+	{
+		return !(in_lValue <= in_rValue);
+	}
+
+	//template<>
+	//std::map<time_slot, Slot*>::iterator SessionPrototype<Slot>::begin()
 	//{
-	//	if (in_lValue._ID == in_rValue._ID)
-	//	{
-	//		return true;
-	//	}
-	//	else
-	//	{
-	//		return false;
-	//	}
+	//	return _content.begin();
 	//}
 
-	//bool operator<=(const session &in_lValue, const session  &in_rValue)
+	//template<>
+	//std::map<time_slot, Slot*>::iterator SessionPrototype<Slot>::end()
 	//{
-	//	return in_lValue._ID <= in_rValue._ID;
+	//	return _content.end();
 	//}
 
-	//bool operator>=(const session &in_lValue, const session  &in_rValue)
+	//template<>
+	//std::map<time_slot, Slot*>::const_iterator SessionPrototype<Slot>::begin() const
 	//{
-	//	return in_lValue._ID >= in_rValue._ID;
+	//	return _content.begin();
 	//}
 
-	//bool operator<(const session &in_lValue, const session &in_rValue)
+	//template<>
+	//std::map<time_slot, Slot*>::const_iterator SessionPrototype<Slot>::end() const
 	//{
-	//	return !(in_lValue >= in_rValue);
-	//}
-
-	//bool operator>(const session &in_lValue, const session &in_rValue)
-	//{
-	//	return !(in_lValue <= in_rValue);
+	//	return _content.end();
 	//}
 }

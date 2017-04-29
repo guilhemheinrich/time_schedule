@@ -4,14 +4,16 @@
 #include <string>
 #include <vector>
 #include "IncludedHeaders.h"
+#include "Calendar.h"
+#include "TimeScheduleEntity.h"
 
-class Teacher
+class Teacher : TimeScheduleEntity
 {
 public:
-	Teacher(std::string in_name);
-	Teacher(std::string in_name, Subject in_subject);
 
-	bool addOneHour();
+	Teacher(std::vector<Schedule::session> in_allSessions, std::string in_name, Subject in_subject);
+
+	bool addOneHour(Slot* in_slot);
 
 private:
 

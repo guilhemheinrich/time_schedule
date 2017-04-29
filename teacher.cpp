@@ -1,17 +1,11 @@
 #include "teacher.h"
 
-
-Teacher::Teacher(std::string in_name) :
-	_name(in_name)
+Teacher::Teacher(std::vector<Schedule::session> in_allSessions, std::string in_name, Subject in_subject) :
+	TimeScheduleEntity(in_allSessions), _name(in_name), _subject(in_subject)
 {
 }
 
-Teacher::Teacher(std::string in_name, Subject in_subject) :
-	_name(in_name), _subject(in_subject)
-{
-}
-
-bool Teacher::addOneHour()
+bool Teacher::addOneHour(Slot* in_slot)
 {
 	if (_hourGiven == _nbHourToGive)
 	{

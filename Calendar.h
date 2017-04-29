@@ -27,8 +27,7 @@ public:
 	int buildAllSlots();
 
 	const std::vector<Slot*> getAllSlots() const;
-	const std::vector<Slot*> getSlotsByRooms (Room in_room) const;
-	const std::vector<Slot*> getSlotsBySchedule(Schedule::time_slot in_ts) const;
+
 
 private:
 	std::set<Schedule::time_slot> _allTimeSlots;

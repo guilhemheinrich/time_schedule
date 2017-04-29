@@ -6,19 +6,23 @@
 #include <ctime>
 
 #include "schedule.h"
+#include "Calendar.h"
 
 class TimeScheduleEntity
 {
 public:
 	TimeScheduleEntity();
+	TimeScheduleEntity(std::vector<Schedule::session> in_allSessions);
 	~TimeScheduleEntity();
 
 
 	// Return the score
-	double score();
+	virtual double score();
 
 
-private:
-	std::map<SessionID, Schedule::SessionPrototype<bool> >  _weekFilledSlots;
+
+
+protected:
+	std::map<Schedule::session, Schedule::SessionPrototype<Slot> >  _allSlotsPerSessions;
 };
 

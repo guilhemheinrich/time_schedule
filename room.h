@@ -5,15 +5,18 @@
 #include <set>
 #include <map>
 #include <functional>
+
 #include "IncludedHeaders.h"
 #include "schedule.h"
-#include "teacher.h"
-#include "class.h"
+
+
 struct Room
 {
 	Room(std::string in_name);
 
 	std::string _name;
+
+	
 };
 
 // For using Room as Key

@@ -1,10 +1,21 @@
 #include "stdafx.h"
 #include "TimeScheduleEntity.h"
-#include <functional>
+
 
 
 TimeScheduleEntity::TimeScheduleEntity()
 {
+}
+
+TimeScheduleEntity::TimeScheduleEntity(std::vector<Schedule::session> in_allSessions)
+{
+	Schedule::session sTest(tm(), 3);
+	Schedule::SessionPrototype<Slot> spTest(sTest);
+
+	for (Schedule::session tmpSession : in_allSessions)
+	{
+		_allSlotsPerSessions[tmpSession] = Schedule::SessionPrototype<Slot>(tmpSession);
+	}
 }
 
 
@@ -23,26 +34,28 @@ double TimeScheduleEntity::score()
 		}
 		return _sum; 
 	};
-	for (auto sessionBool : _weekFilledSlots)
+	for (auto pSessionAndSlots : _allSlotsPerSessions)
 	{
+		auto sessionSlots = pSessionAndSlots.second;
 		bool activated = false;
 		ul start, end;
-		for (ul ulIndex = 0; ulIndex < sessionBool.second.size(); ulIndex++)
-		{
-			// start is the first used slot
-			if (*sessionBool.second[ulIndex].second == true && activated == false)
-			{
-				activated = true;
-				start = ulIndex;
-				end = ulIndex;
-			}
-			if (activated && *sessionBool.second[ulIndex].second == true)
-			{
-				end = ulIndex;
-			}
-		}
-		dScore += fSum(sessionBool.second.size() - (end - start));
+		ul ulRunningIndex = 0;
+		//for (auto pTimeSlotAndSlot : sessionSlots)
+		//{
 
+		//	// start is the first used slot
+		//	if (pTimeSlotAndSlot.second != nullptr && activated == false)
+		//	{
+		//		activated = true;
+		//		start = ulRunningIndex;
+		//		end = ulRunningIndex;
+		//	}
+		//	if (activated && pTimeSlotAndSlot.second != nullptr)
+		//	{
+		//		end = ulRunningIndex;
+		//	}
+		//}
+		//dScore += fSum(sessionSlots.size() - (end - start));
 	}
 	return dScore;
 }

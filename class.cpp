@@ -3,8 +3,8 @@
 //ul Class::_cpt = 0;
 //std::vector<std::reference_wrapper<Class> > Class::_allClass;
 
-Class::Class(std::string in_name, std::map<Subject, ul > in_subjectsAndRequirements) :
-	_name(in_name)
+Class::Class(std::vector<Schedule::session> in_allSessions, std::string in_name, std::map<Subject, ul > in_subjectsAndRequirements) :
+	TimeScheduleEntity(in_allSessions), _name(in_name)
 {
 		for (auto subjectAndReq : in_subjectsAndRequirements)
 		{
@@ -28,11 +28,12 @@ void Class::setSubjectAndRequirement(Subject in_subject, hourObjectiveAndFill in
 	_subjectsAndRequirements[in_subject] = in_objectiveAndFill;
 }
 
-bool Class::addOneHour(Subject in_subject)
+bool Class::addOneHour(Slot* in_slot, Subject in_subject)
 {
-	if (_dedicatedTeacher[in_subject]->addOneHour() && _subjectsAndRequirements[in_subject].fill < _subjectsAndRequirements[in_subject].objective)
+	if (_dedicatedTeacher[in_subject]->addOneHour(in_slot) && _subjectsAndRequirements[in_subject].fill < _subjectsAndRequirements[in_subject].objective)
 	{
 		_subjectsAndRequirements[in_subject].fill++;
+
 		return true;
 	}
 	else

@@ -109,11 +109,11 @@ int main()
 
 	// Creating the classes and teachers
 
-	Teacher * tMath = new Teacher("tMath", Subject::MATH);
-	Teacher * tFrench= new Teacher("tFrench", Subject::FRENCH);
-	Teacher * tHistory= new Teacher("tHistory", Subject::HISTORY);
-	Teacher * tSport= new Teacher("tSport", Subject::SPORT);
-	Teacher * tEnglish = new Teacher("tEnglish", Subject::ENGLISH);
+	Teacher * tMath = new Teacher(sessions_template, "tMath", Subject::MATH);
+	Teacher * tFrench= new Teacher(sessions_template, "tFrench", Subject::FRENCH);
+	Teacher * tHistory= new Teacher(sessions_template, "tHistory", Subject::HISTORY);
+	Teacher * tSport= new Teacher(sessions_template, "tSport", Subject::SPORT);
+	Teacher * tEnglish = new Teacher(sessions_template, "tEnglish", Subject::ENGLISH);
 
 	// Class schedule
 
@@ -124,9 +124,9 @@ int main()
 	standardClass[Subject::HISTORY] = 4;
 	standardClass[Subject::SPORT] = 4;
 	standardClass[Subject::ENGLISH] = 4;
-	Class *c1 = new Class("c1", standardClass);
-	Class *c2 = new Class("c2", standardClass);
-	Class *c3 = new Class("c3", standardClass);
+	Class *c1 = new Class(sessions_template, "c1", standardClass);
+	Class *c2 = new Class(sessions_template, "c2", standardClass);
+	Class *c3 = new Class(sessions_template, "c3", standardClass);
 
 	std::vector<Class*> allClasses;
 	allClasses.push_back(c1);
@@ -223,7 +223,7 @@ int main()
 
 		// Do the stuff accordingly
 		// Class & teacher
-		if (pCurrentClass->addOneHour(availableSubjects[ulPickedSubject]))
+		if (pCurrentClass->addOneHour(availableSlots[ulPickedSlot], availableSubjects[ulPickedSubject]))
 		{			
 			//cout << "hour added" << endl;
 		}
