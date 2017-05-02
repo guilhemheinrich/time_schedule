@@ -109,11 +109,12 @@ int main()
 
 	// Creating the classes and teachers
 
-	Teacher * tMath = new Teacher(sessions_template, "tMath", Subject::MATH);
-	Teacher * tFrench= new Teacher(sessions_template, "tFrench", Subject::FRENCH);
-	Teacher * tHistory= new Teacher(sessions_template, "tHistory", Subject::HISTORY);
-	Teacher * tSport= new Teacher(sessions_template, "tSport", Subject::SPORT);
-	Teacher * tEnglish = new Teacher(sessions_template, "tEnglish", Subject::ENGLISH);
+	Teacher tMath(sessions_template, "tMath", Subject::MATH);
+	Teacher tFrench(sessions_template, "tFrench", Subject::FRENCH);
+	Teacher tHistory(sessions_template, "tHistory", Subject::HISTORY);
+	Teacher tSport(sessions_template, "tSport", Subject::SPORT);
+	Teacher tEnglish(sessions_template, "tEnglish", Subject::ENGLISH);
+	//Teacher *ptEnglish = new Teacher(sessions_template, "tEnglish", Subject::ENGLISH);
 
 	// Class schedule
 
@@ -124,23 +125,25 @@ int main()
 	standardClass[Subject::HISTORY] = 4;
 	standardClass[Subject::SPORT] = 4;
 	standardClass[Subject::ENGLISH] = 4;
-	Class *c1 = new Class(sessions_template, "c1", standardClass);
-	Class *c2 = new Class(sessions_template, "c2", standardClass);
-	Class *c3 = new Class(sessions_template, "c3", standardClass);
+	Class c1(sessions_template, "c1", standardClass);
+	Class c2(sessions_template, "c2", standardClass);
+	Class c3(sessions_template, "c3", standardClass);
 
-	std::vector<Class*> allClasses;
+	std::vector<Class> allClasses;
 	allClasses.push_back(c1);
 	allClasses.push_back(c2);
 	allClasses.push_back(c3);
 
 	// Association des professeurs
-	for (auto pClass : allClasses)
+	for (auto &pClass : allClasses)
 	{
-		pClass->setTeacherForSubject(Subject::MATH, tMath);
-		pClass->setTeacherForSubject(Subject::FRENCH, tFrench);
-		pClass->setTeacherForSubject(Subject::HISTORY, tHistory);
-		pClass->setTeacherForSubject(Subject::SPORT, tSport);
-		pClass->setTeacherForSubject(Subject::ENGLISH, tEnglish);
+		pClass.setTeacherForSubject(Subject::MATH, &tMath);
+		pClass.setTeacherForSubject(Subject::FRENCH, &tFrench);
+		pClass.setTeacherForSubject(Subject::HISTORY, &tHistory);
+		pClass.setTeacherForSubject(Subject::SPORT, &tSport);
+		pClass.setTeacherForSubject(Subject::ENGLISH, &tEnglish);
+		//pClass.setTeacherForSubject(Subject::ENGLISH, ptEnglish);
+
 	}
 
 	// Première génération
@@ -151,10 +154,10 @@ int main()
 	std::vector<std::pair<Class*, ul> > cptByClasses;
 
 	ul ulCpt = 0;
-	for (auto pClass : allClasses)
+	for (auto &pClass : allClasses)
 	{
-		cptByClasses.push_back(std::pair<Class*, ul>(pClass, 0));
-		std::map<Subject, hourObjectiveAndFill > mRemainingHours = pClass->getSubjectAndRequirements();
+		cptByClasses.push_back(std::pair<Class*, ul>(&pClass, 0));
+		std::map<Subject, hourObjectiveAndFill > mRemainingHours = pClass.getSubjectAndRequirements();
 		for (auto pSubjectANdHourObjectiveAndFill : mRemainingHours)
 		{
 			cptByClasses[ulCpt].second += pSubjectANdHourObjectiveAndFill.second.objective;

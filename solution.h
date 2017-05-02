@@ -11,9 +11,15 @@
 class Solution
 {
 public:
-    Solution();
+	Solution();
+	~Solution();
 private:
+	std::vector<Class*> _allClasses;
+	std::vector<Teacher*> _allteachers;
+	std::vector<Slot*> _allUnusedSlots;
+
 
 };
+
 
 #endif // SOLUTION_H

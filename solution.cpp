@@ -4,3 +4,7 @@ Solution::Solution()
 {
 
 }
+
+Solution::~Solution()
+{
+}

@@ -14,7 +14,7 @@ struct Slot
 	Room room;
 	Schedule::time_slot ts;
 
-	Slot *next = nullptr;
+	//Slot *next = nullptr;
 };
 
 class Calendar

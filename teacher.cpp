@@ -1,5 +1,9 @@
 #include "teacher.h"
 
+Teacher::Teacher()
+{
+}
+
 Teacher::Teacher(std::vector<Schedule::session> in_allSessions, std::string in_name, Subject in_subject) :
 	TimeScheduleEntity(in_allSessions), _name(in_name), _subject(in_subject)
 {

@@ -18,7 +18,7 @@ std::string Class::getName() const
 	return _name;
 }
 
-void Class::setTeacherForSubject(Subject in_subject, Teacher * in_pTeacher)
+void Class::setTeacherForSubject(Subject in_subject, Teacher *in_pTeacher)
 {
 	_dedicatedTeacher.at(in_subject) = in_pTeacher;
 }

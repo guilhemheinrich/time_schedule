@@ -4,6 +4,7 @@ using ul = unsigned long;
 
 enum class Subject
 {
+	EMPTY,
 	MATH,
 	FRENCH,
 	ENGLISH,

@@ -10,17 +10,17 @@
 class Teacher : TimeScheduleEntity
 {
 public:
-
+	Teacher();
 	Teacher(std::vector<Schedule::session> in_allSessions, std::string in_name, Subject in_subject);
 
 	bool addOneHour(Slot* in_slot);
 
 private:
 
-	std::string _name;
+	std::string _name = "DEFAULT";
 	ul _nbHourToGive = 15;
 	ul _hourGiven = 0;
-	Subject _subject;
+	Subject _subject = Subject::EMPTY;
 
 };
 

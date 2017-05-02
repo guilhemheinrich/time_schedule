@@ -21,7 +21,7 @@ public:
 
 	std::string getName() const;
 
-	void setTeacherForSubject(Subject in_subject, Teacher* in_pTeacher);
+	void setTeacherForSubject(Subject in_subject, Teacher *in_pTeacher);
 	void setSubjectAndRequirement(Subject in_subject, hourObjectiveAndFill in_objectiveAndFill);
 
 	bool addOneHour(Slot* in_slot, Subject in_subject);
