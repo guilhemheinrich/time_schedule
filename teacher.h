@@ -7,7 +7,7 @@
 #include "Calendar.h"
 #include "TimeScheduleEntity.h"
 
-class Teacher : TimeScheduleEntity
+class Teacher : public TimeScheduleEntity
 {
 public:
 	Teacher();

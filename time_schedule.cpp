@@ -115,6 +115,13 @@ int main()
 	Teacher tSport(sessions_template, "tSport", Subject::SPORT);
 	Teacher tEnglish(sessions_template, "tEnglish", Subject::ENGLISH);
 	//Teacher *ptEnglish = new Teacher(sessions_template, "tEnglish", Subject::ENGLISH);
+	std::vector<Teacher*> allTeacher;
+	allTeacher.push_back(&tMath);
+	allTeacher.push_back(&tFrench);
+	allTeacher.push_back(&tHistory);
+	allTeacher.push_back(&tSport);
+	allTeacher.push_back(&tEnglish);
+
 
 	// Class schedule
 
@@ -142,8 +149,6 @@ int main()
 		pClass.setTeacherForSubject(Subject::HISTORY, &tHistory);
 		pClass.setTeacherForSubject(Subject::SPORT, &tSport);
 		pClass.setTeacherForSubject(Subject::ENGLISH, &tEnglish);
-		//pClass.setTeacherForSubject(Subject::ENGLISH, ptEnglish);
-
 	}
 
 	// Première génération
@@ -246,7 +251,15 @@ int main()
 		cout << "________________________" << endl;
 	}
 
+	for (auto &tmpClass : allClasses)
+	{
+		cout << tmpClass.score() << endl;
+	}
 
+	for (auto tmpTeacher : allTeacher)
+	{
+		cout << tmpTeacher->score() << endl;
+	}
 	cin.get();
     return 0;
 }

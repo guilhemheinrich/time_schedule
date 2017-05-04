@@ -59,8 +59,12 @@ double TimeScheduleEntity::score()
 			{
 				end = ulRunningIndex;
 			}
+			ulRunningIndex++;
 		}
-		dScore += fSum(sessionContent.size() - (end - start));
+		if (activated)
+		{
+			dScore += fSum(sessionContent.size() - (end - start));
+		}
 	}
 	return dScore;
 }

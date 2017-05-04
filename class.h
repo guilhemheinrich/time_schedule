@@ -14,7 +14,7 @@ struct hourObjectiveAndFill
 	ul fill = 0;
 };
 
-class Class : TimeScheduleEntity
+class Class : public TimeScheduleEntity
 {
 public:
 	Class(std::vector<Schedule::session> in_allSessions, std::string in_name, std::map<Subject, ul > in_subjectsAndRequirements);

@@ -17,7 +17,7 @@ public:
 
 	void add(Slot* in_slot);
 	// Return the score
-	virtual double score();
+	double score();
 
 
 
