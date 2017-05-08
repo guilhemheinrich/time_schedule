@@ -20,6 +20,10 @@ std::string Class::getName() const
 
 void Class::setTeacherForSubject(Subject in_subject, Teacher *in_pTeacher)
 {
+	if (in_pTeacher->getClasses().count(this) == 0)
+	{
+		in_pTeacher->addClass(this);
+	}
 	_dedicatedTeacher.at(in_subject) = in_pTeacher;
 }
 
@@ -70,3 +74,63 @@ std::vector<Subject> Class::notFilledObjective()
 //{
 //	(*this) = _allClass[in_ID];
 //}
+
+bool operator==(const Class & in_lValue, const Class & in_rValue)
+{
+	if (in_lValue._name == in_rValue._name)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool operator<=(const Class & in_lValue, const Class & in_rValue)
+{
+	if (in_lValue._name <= in_rValue._name)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool operator>=(const Class & in_lValue, const Class & in_rValue)
+{
+	if (in_lValue._name >= in_rValue._name)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool operator<(const Class & in_lValue, const Class & in_rValue)
+{
+	if (!(in_lValue._name >= in_rValue._name))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool operator>(const Class & in_lValue, const Class & in_rValue)
+{
+	if (!(in_lValue._name <= in_rValue._name))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}

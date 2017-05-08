@@ -5,6 +5,7 @@
 #include <map>
 #include <functional>
 
+#include "IncludedHeaders.h"
 #include "room.h"
 #include "schedule.h"
 

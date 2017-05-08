@@ -16,6 +16,11 @@ struct hourObjectiveAndFill
 
 class Class : public TimeScheduleEntity
 {
+	friend bool operator==(const Class &in_lValue, const Class &in_rValue);
+	friend bool operator<=(const Class &in_lValue, const Class &in_rValue);
+	friend bool operator>=(const Class &in_lValue, const Class &in_rValue);
+	friend bool operator<(const Class &in_lValue, const Class &in_rValue);
+	friend bool operator>(const Class &in_lValue, const Class &in_rValue);
 public:
 	Class(std::vector<Schedule::session> in_allSessions, std::string in_name, std::map<Subject, ul > in_subjectsAndRequirements);
 
@@ -37,4 +42,9 @@ private:
 	std::map <Subject, Teacher*> _dedicatedTeacher;
 };
 
+bool operator==(const Class &in_lValue, const Class &in_rValue);
+bool operator<=(const Class &in_lValue, const Class &in_rValue);
+bool operator>=(const Class &in_lValue, const Class &in_rValue);
+bool operator<(const Class &in_lValue, const Class &in_rValue);
+bool operator>(const Class &in_lValue, const Class &in_rValue);
 #endif // CLASS_H
