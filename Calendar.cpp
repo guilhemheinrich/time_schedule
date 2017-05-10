@@ -23,7 +23,7 @@ int Calendar::buildAllSlots()
 	{
 		for (auto room : _allRooms)
 		{
-			Slot *tmpSlot = new Slot(room, ts);
+			Slot tmpSlot(room, ts);
 			_allSlots.push_back(tmpSlot);
 			_slotsByRoom[room].push_back(tmpSlot);
 			_slotsBySchedule[ts].push_back(tmpSlot);
@@ -34,7 +34,7 @@ int Calendar::buildAllSlots()
 	return cpt;
 }
 
-const std::vector<Slot*> Calendar::getAllSlots() const
+const std::vector<Slot> Calendar::getAllSlots() const
 {
 	return _allSlots;
 }
@@ -42,4 +42,15 @@ const std::vector<Slot*> Calendar::getAllSlots() const
 Slot::Slot(Room in_room, Schedule::time_slot in_ts):
 room(in_room), ts(in_ts)
 {
+}
+
+double Slot::score() const
+{
+	double score = 0.0;
+	if (pTeacher == nullptr || pClass == nullptr)
+	{
+		return 0.0;
+	}
+	//pTeacher->
+	return score;
 }

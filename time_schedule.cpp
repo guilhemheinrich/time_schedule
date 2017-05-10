@@ -91,7 +91,7 @@ int main()
 	Calendar calendar(allTimeSlot, allRoom);
 	calendar.buildAllSlots();
 
-	std::vector<Slot*> allSlots = calendar.getAllSlots();
+	std::vector<Slot> allSlots = calendar.getAllSlots();
 	//char buffer[80];
 	//cout << "allSlots.size() : " << allSlots.size() << endl;
 	//for (auto slot : allSlots)
@@ -162,9 +162,9 @@ int main()
 	Solution secondSolution(allClasses, allTeacher, allSlots, &allTimeSlot);
 	secondSolution.generate();
 
-	cout << "first solution core " << firstSolution.getScore() << endl;
+	cout << "first solution score " << firstSolution.getScore() << endl;
 
-	cout << "second solution core " << secondSolution.getScore() << endl;
+	cout << "second solution score " << secondSolution.getScore() << endl;
 
 
 	// Build the cpt of remaining hours by class (same order as allClasses)

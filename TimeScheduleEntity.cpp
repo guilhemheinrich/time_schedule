@@ -23,10 +23,18 @@ TimeScheduleEntity::~TimeScheduleEntity()
 {
 }
 
-void TimeScheduleEntity::add(Slot * in_slot)
+void TimeScheduleEntity::addSlot(Slot * in_slot)
 {
 	Schedule::session sessionTmp = in_slot->ts.session;
 	_allSlotsPerSessions[sessionTmp].at(in_slot->ts, in_slot);
+}
+
+void TimeScheduleEntity::freeSlot(Slot * in_slot)
+{
+	Schedule::session tmpSession = in_slot->ts.session;
+	// Should be in a upper level function
+	//in_slot->occupied = false;
+	_allSlotsPerSessions[tmpSession].at(in_slot->ts, nullptr);
 }
 
 double TimeScheduleEntity::score()
@@ -67,4 +75,9 @@ double TimeScheduleEntity::score()
 		}
 	}
 	return dScore;
+}
+
+std::map<Schedule::session, Schedule::SessionPrototype<Slot>> TimeScheduleEntity::getAllSlotsPerSession() const
+{
+	return _allSlotsPerSessions;
 }

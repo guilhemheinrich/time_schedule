@@ -9,13 +9,24 @@
 #include "room.h"
 #include "schedule.h"
 
+class Teacher;
+class Class;
+
 struct Slot
 {
 	Slot(Room in_room, Schedule::time_slot in_ts);
 	Room room;
 	Schedule::time_slot ts;
 
-	//Slot *next = nullptr;
+	bool occupied = false;
+	Teacher *pTeacher = nullptr;
+	Class *pClass = nullptr;
+
+	double score() const;
+
+//private:
+//	Slot *previous = nullptr;
+//	Slot *next = nullptr;
 };
 
 class Calendar
@@ -27,15 +38,15 @@ public:
 
 	int buildAllSlots();
 
-	const std::vector<Slot*> getAllSlots() const;
+	const std::vector<Slot> getAllSlots() const;
 
 
 private:
 	std::set<Schedule::time_slot> _allTimeSlots;
 	std::vector<Room> _allRooms;
 
-	std::map<Room, std::vector<Slot*>> _slotsByRoom;
-	std::map<Schedule::time_slot, std::vector<Slot*>> _slotsBySchedule;
-	std::vector<Slot*> _allSlots;
+	std::map<Room, std::vector<Slot>> _slotsByRoom;
+	std::map<Schedule::time_slot, std::vector<Slot>> _slotsBySchedule;
+	std::vector<Slot> _allSlots;
 };
 

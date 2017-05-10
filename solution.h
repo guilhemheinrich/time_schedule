@@ -5,7 +5,6 @@
 #include "class.h"
 #include "room.h"
 #include "schedule.h"
-//#include "slot.h"
 #include "teacher.h"
 
 
@@ -13,10 +12,11 @@ class Solution
 {
 public:
 	Solution();
-	Solution(std::vector<Class> in_allClasses, std::vector<Teacher> in_allTeachers, std::vector<Slot*> _in_allSlots, std::set<Schedule::time_slot> *in_pAllTimeSlots);
+	Solution(std::vector<Class> in_allClasses, std::vector<Teacher> in_allTeachers, std::vector<Slot> in_allSlots, std::set<Schedule::time_slot> *in_pAllTimeSlots);
 	~Solution();
 
 	void generate();
+	void mutate();
 
 	double getScore() const;
 private:
@@ -27,7 +27,10 @@ private:
 	std::vector<Slot*> _allSlots;
 	std::vector<Slot*> _allUnusedSlots;
 
-
+	// Internals
+	std::vector<std::pair<Class*, ul> > _cptByClasses;
+	std::vector<std::pair<Class*, std::set<Schedule::time_slot> >> _timeSlotPerClasses;
+	std::set<Schedule::time_slot> _globallyUsedTimeSlots;
 };
 
 

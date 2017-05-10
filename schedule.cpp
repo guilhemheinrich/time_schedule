@@ -65,6 +65,21 @@ namespace Schedule
 		return encoded;
 	}
 
+	time_slot & time_slot::operator++()
+	{
+		// TODO: insérer une instruction return ici
+		start.tm_hour++;
+		end.tm_hour++;
+		return *this;
+	}
+
+	time_slot time_slot::operator++(int)
+	{
+		time_slot result(*this);	// make a copy for result
+		++(*this);					// Now use the prefix version to do the work
+		return result;
+	}
+
 
 
 	bool operator==(const time_slot &in_lValue, const time_slot &in_rValue)

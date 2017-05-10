@@ -107,6 +107,10 @@ namespace Schedule
 		tm end;
 
 		const double _encode() const;
+
+		time_slot& operator++(); // prefix operator
+		time_slot operator++(int); // postfix operator
+
 	private:
 		// used internally to compare time slot
 	};

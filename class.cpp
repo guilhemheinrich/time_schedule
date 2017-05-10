@@ -37,7 +37,7 @@ bool Class::addOneHour(Slot* in_slot, Subject in_subject)
 	if (_dedicatedTeacher[in_subject]->addOneHour(in_slot) && _subjectsAndRequirements[in_subject].fill < _subjectsAndRequirements[in_subject].objective)
 	{
 		_subjectsAndRequirements[in_subject].fill++;
-		add(in_slot);
+		addSlot(in_slot);
 		return true;
 	}
 	else
