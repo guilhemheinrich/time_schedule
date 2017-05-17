@@ -9,12 +9,21 @@ TimeScheduleEntity::TimeScheduleEntity()
 
 TimeScheduleEntity::TimeScheduleEntity(std::vector<Schedule::session> in_allSessions)
 {
-	Schedule::session sTest(tm(), 3);
-	Schedule::SessionPrototype<Slot> spTest(sTest);
-
 	for (Schedule::session tmpSession : in_allSessions)
 	{
-		_allSlotsPerSessions[tmpSession] = Schedule::SessionPrototype<Slot>(tmpSession);
+		_allSlotsPerSessions[tmpSession] = Schedule::SessionPrototype<Slot*>(tmpSession, nullptr);
+		_allNeighborhoodStructurePerSessions[tmpSession] = Schedule::SessionPrototype<double>(tmpSession, 0.0);
+	}
+
+	// Set the slot score value to 1 for start and end
+	for (auto &tmpSessionPrototypeNeighborSturcture : _allNeighborhoodStructurePerSessions)
+	{
+		auto tmpNeighborSturcture = tmpSessionPrototypeNeighborSturcture.second.getPointerContent();
+		auto iteStart = tmpNeighborSturcture->begin();
+		(*iteStart).second = 1.0;
+		auto iteEnd = tmpNeighborSturcture->end();
+		iteEnd--;
+		(*iteEnd).second = 1.0;
 	}
 }
 
@@ -77,7 +86,7 @@ double TimeScheduleEntity::score()
 	return dScore;
 }
 
-std::map<Schedule::session, Schedule::SessionPrototype<Slot>> TimeScheduleEntity::getAllSlotsPerSession() const
+std::map<Schedule::session, Schedule::SessionPrototype<Slot*>> TimeScheduleEntity::getAllSlotsPerSession() const
 {
 	return _allSlotsPerSessions;
 }

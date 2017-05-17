@@ -73,15 +73,16 @@ namespace Schedule
 		//friend std::map<time_slot, TYPE*>::iterator end(SessionPrototype<TYPE> &in_sessionPrototype);
 	public:
 		SessionPrototype();
-		SessionPrototype(session in_session);
+		SessionPrototype(session in_session, TYPE in_defaultInitializer);
 		SessionPrototype(const SessionPrototype<TYPE> &in_sessionPrototype);
 
-		void at(time_slot in_timeSlot, TYPE *in_newValue);
+		void at(time_slot in_timeSlot, TYPE in_newValue);
 		const ul size() const;
-		const std::pair<time_slot, TYPE*>& operator[](time_slot in_timeSlot) const;
+		const std::pair<time_slot, TYPE>& operator[](time_slot in_timeSlot) const;
 
-		const std::map<time_slot, TYPE* > getContent() const;
-		std::map<time_slot, TYPE* > getContent();
+		const std::map<time_slot, TYPE > getContent() const;
+		std::map<time_slot, TYPE > getContent();
+		std::map<time_slot, TYPE >* getPointerContent();
 
 
 		//std::map<time_slot, TYPE*>::iterator begin();
@@ -93,7 +94,7 @@ namespace Schedule
 
 		operator std::string();
 	private:
-		std::map<time_slot, TYPE* > _content;
+		std::map<time_slot, TYPE> _content;
 		session _session;
 	};
 
@@ -181,7 +182,7 @@ namespace Schedule
 	}
 
 	template<typename TYPE>
-	inline SessionPrototype<TYPE>::SessionPrototype(session in_session):
+	inline SessionPrototype<TYPE>::SessionPrototype(session in_session, TYPE in_defaultInitializer):
 		_session(in_session)
 	{
 		for (ul ulCpt = 0; ulCpt < in_session.hourDuration(); ulCpt++)
@@ -194,7 +195,7 @@ namespace Schedule
 			tmpTm.end = tmpTm.start;
 			tmpTm.end.tm_hour++;
 
-			_content[tmpTm] = nullptr;
+			_content[tmpTm] = in_defaultInitializer;
 		}
 	}
 
@@ -204,7 +205,7 @@ namespace Schedule
 	{
 	}
 	template<typename TYPE>
-	inline void SessionPrototype<TYPE>::at(time_slot in_timeSlot, TYPE * in_newValue)
+	inline void SessionPrototype<TYPE>::at(time_slot in_timeSlot, TYPE in_newValue)
 	{
 		_content[in_timeSlot] = in_newValue;
 	}
@@ -216,21 +217,27 @@ namespace Schedule
 	}
 
 	template<typename TYPE>
-	inline const std::pair<time_slot, TYPE*>& SessionPrototype<TYPE>::operator[](time_slot in_timeSlot) const
+	inline const std::pair<time_slot, TYPE>& SessionPrototype<TYPE>::operator[](time_slot in_timeSlot) const
 	{
 		return _content.at(in_timeSlot);
 	}
 
 	template<typename TYPE>
-	inline const std::map<time_slot, TYPE*> SessionPrototype<TYPE>::getContent() const
+	inline const std::map<time_slot, TYPE> SessionPrototype<TYPE>::getContent() const
 	{
 		return _content;
 	}
 
 	template<typename TYPE>
-	inline std::map<time_slot, TYPE*> SessionPrototype<TYPE>::getContent()
+	inline std::map<time_slot, TYPE> SessionPrototype<TYPE>::getContent()
 	{
 		return _content;
+	}
+
+	template<typename TYPE>
+	inline std::map<time_slot, TYPE>* SessionPrototype<TYPE>::getPointerContent()
+	{
+		return &_content;
 	}
 
 

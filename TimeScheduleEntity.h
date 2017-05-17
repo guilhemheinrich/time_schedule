@@ -21,10 +21,11 @@ public:
 	// Return the score
 	double score();
 
-	std::map<Schedule::session, Schedule::SessionPrototype<Slot> > getAllSlotsPerSession() const;
+	std::map<Schedule::session, Schedule::SessionPrototype<Slot*> > getAllSlotsPerSession() const;
 
 
 protected:
-	std::map<Schedule::session, Schedule::SessionPrototype<Slot> >  _allSlotsPerSessions;
+	std::map<Schedule::session, Schedule::SessionPrototype<Slot*> >  _allSlotsPerSessions;
+	std::map<Schedule::session, Schedule::SessionPrototype<double> >  _allNeighborhoodStructurePerSessions;
 };
 
