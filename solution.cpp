@@ -19,15 +19,6 @@ Solution::Solution(std::vector<Class> in_allClasses, std::vector<Teacher> in_all
 		Slot *pSlot = new Slot(tmpSlot);
 		_allSlots.push_back(pSlot);
 	}
-	//for (Class tmpClass : in_allClasses)
-	//{
-	//	_allClasses.push_back(tmpClass);
-	//}
-
-	//for (Teacher tmpTeacher : in_allTeachers)
-	//{
-	//	_allTeachers.push_back(tmpTeacher);
-	//}
 
 	// We need to initialize the correct pointers to teachers from the classes.
 	// For that, we will create new pointers to point to the teachers and classes
@@ -76,48 +67,50 @@ Solution::~Solution()
 void Solution::generate()
 {
 	// Build the cpt of remaining hours by class (same order as allClasses)
-	//std::vector<std::pair<Class*, ul> > cptByClasses;
+	std::vector<std::pair<Class*, ul> > cptByClasses;
 
 	ul ulCpt = 0;
 	for (auto &pClass : _allClasses)
 	{
-		_cptByClasses.push_back(std::pair<Class*, ul>(&pClass, 0));
+		cptByClasses.push_back(std::pair<Class*, ul>(&pClass, 0));
 		std::map<Subject, hourObjectiveAndFill > mRemainingHours = pClass.getSubjectAndRequirements();
 		for (auto pSubjectANdHourObjectiveAndFill : mRemainingHours)
 		{
-			_cptByClasses[ulCpt].second += pSubjectANdHourObjectiveAndFill.second.objective;
+			cptByClasses[ulCpt].second += pSubjectANdHourObjectiveAndFill.second.objective;
 		}
 		ulCpt++;
 	}
 
 	// Keep track of the time slots used per classes
 	//std::vector<std::pair<Class*, std::set<Schedule::time_slot> >> timeSlotPerClasses;
-	_timeSlotPerClasses.resize(_allClasses.size());
+	//_timeSlotPerClasses.resize(_allClasses.size());
+
 	std::set<Schedule::time_slot> globallyUsedTimeSlots;
 
 	// Keep track of the  time_slots a class uses
 
 
 	// Set the mapping function, 
-	std::map<Schedule::time_slot, std::vector<Slot*> > mapTS = mapper::reducer<Schedule::time_slot>(_allSlots);
+	_mapTS = mapper::reducer<Schedule::time_slot>(_allSlots);
 
 	// random slot(class, room, time_slot) made in two steps : first we choose the class , then the (room, time_slot), among available ones
 	// P(class, room, time_slot) = P(class)  x P(time_slot, room | class) = P(class)  x P(time_slot, room), independency
 
 
-	while (_cptByClasses.size() != 0)
+	while (cptByClasses.size() != 0)
 	{
 		// Choose a random class
 		//std::cout << "there is " << cptByClasses.size() << " classes remaining" << std::endl;
-		ul ulRandomClass = rand() % _cptByClasses.size();
-		Class* pCurrentClass = _cptByClasses[ulRandomClass].first;
+		ul ulRandomClass = rand() % cptByClasses.size();
+		Class* pCurrentClass = cptByClasses[ulRandomClass].first;
 
 		//std::cout << "picked class : " << pCurrentClass->getName() << " which is class number " << ulRandomClass << std::endl;
 
-		// Pick an availble time slot
+		// Pick an available time slot
 		std::vector<Schedule::time_slot> tmpAvailableSlots;
 		std::vector<Schedule::time_slot> availableTimeSlots;
-		set_difference((*_pAllTimeSlots).begin(), (*_pAllTimeSlots).end(), _timeSlotPerClasses[ulRandomClass].second.begin(), _timeSlotPerClasses[ulRandomClass].second.end(), std::inserter(tmpAvailableSlots, tmpAvailableSlots.begin()));
+		//set_difference((*_pAllTimeSlots).begin(), (*_pAllTimeSlots).end(), _timeSlotPerClasses[ulRandomClass].second.begin(), _timeSlotPerClasses[ulRandomClass].second.end(), std::inserter(tmpAvailableSlots, tmpAvailableSlots.begin()));
+		set_difference((*_pAllTimeSlots).begin(), (*_pAllTimeSlots).end(), _timeSlotPerClasses[pCurrentClass].begin(), _timeSlotPerClasses[pCurrentClass].end(), std::inserter(tmpAvailableSlots, tmpAvailableSlots.begin()));
 		set_difference(tmpAvailableSlots.begin(), tmpAvailableSlots.end(), globallyUsedTimeSlots.begin(), globallyUsedTimeSlots.end(), std::inserter(availableTimeSlots, availableTimeSlots.begin()));
 
 		//std::cout << "there is " << availableTimeSlots.size() << " time slots remaining" << std::endl;
@@ -127,8 +120,8 @@ void Solution::generate()
 		//std::cout << "picked time_slot " << ulPickedTimeSlot << std::endl;
 
 		// Pick an available slot
-		std::vector<Slot*> availableSlots = mapTS[availableTimeSlots[ulPickedTimeSlot]];
-		if (mapTS[availableTimeSlots[ulPickedTimeSlot]].size() == 0)
+		std::vector<Slot*> availableSlots = _mapTS[availableTimeSlots[ulPickedTimeSlot]];
+		if (_mapTS[availableTimeSlots[ulPickedTimeSlot]].size() == 0)
 		{
 			//std::cout << "this is not an available time slot" << std::endl;
 		}
@@ -144,7 +137,7 @@ void Solution::generate()
 		if (availableSubjects.size() == 0)
 		{
 			//std::cout << "this class doesnt possess any subject to fill anymore" << std::endl;
-			_cptByClasses.erase(_cptByClasses.begin() + ulRandomClass);
+			cptByClasses.erase(cptByClasses.begin() + ulRandomClass);
 			continue;
 		}
 		ul ulPickedSubject = rand() % availableSubjects.size();
@@ -157,16 +150,19 @@ void Solution::generate()
 			////std::cout << "hour added" << std::endl;
 		}
 
-		// Remove the slot from the available ones and add the time slot to the used for the class
-		mapTS[availableTimeSlots[ulPickedTimeSlot]].erase(mapTS[availableTimeSlots[ulPickedTimeSlot]].begin() + ulPickedSlot);
-		if (mapTS[availableTimeSlots[ulPickedTimeSlot]].size() == 0)
+		// Remove the slot from the available ones and add the time slot to the used ones for the class
+		_mapTS[availableTimeSlots[ulPickedTimeSlot]].erase(_mapTS[availableTimeSlots[ulPickedTimeSlot]].begin() + ulPickedSlot);
+
+		// If the map no longer give availables slots
+		if (_mapTS[availableTimeSlots[ulPickedTimeSlot]].size() == 0)
 		{
-			mapTS.erase(availableTimeSlots[ulPickedTimeSlot]);
+			_mapTS.erase(availableTimeSlots[ulPickedTimeSlot]);
 			globallyUsedTimeSlots.insert(availableTimeSlots[ulPickedTimeSlot]);
 		}
 
-		_timeSlotPerClasses[ulRandomClass].first = pCurrentClass;
-		_timeSlotPerClasses[ulRandomClass].second.insert(availableTimeSlots[ulPickedTimeSlot]);
+		//_timeSlotPerClasses[ulRandomClass].first = pCurrentClass;
+		//_timeSlotPerClasses[ulRandomClass].second.insert(availableTimeSlots[ulPickedTimeSlot]);
+		_timeSlotPerClasses[pCurrentClass].insert(availableTimeSlots[ulPickedTimeSlot]);
 
 		// Fill the slot
 		availableSlots[ulPickedSlot]->occupied = true;
@@ -176,15 +172,6 @@ void Solution::generate()
 		//std::cout << "________________________" << std::endl;
 	}
 
-	//for (auto &tmpClass : allClasses)
-	//{
-	//	std::cout << tmpClass.score() << std::endl;
-	//}
-
-	//for (auto tmpTeacher : allTeacher)
-	//{
-	//	std::cout << tmpTeacher->score() << std::endl;
-	//}
 }
 
 void Solution::mutate()
@@ -194,6 +181,46 @@ void Solution::mutate()
 	// which can be up to 4 if the slot is "well rounded" :
 	// 2 for both the class part and the teacher one
 
+	std::vector<Slot*> allSlotEntries;
+	for (auto teacher : _allTeachers)
+	{
+		for (auto session : teacher.getAllSessions())
+		{
+			auto mapSessionsNeighborhoodStructure = teacher.getAllNeighborhoodStructurePerSessions()[session];
+			auto mapSessionsSlot = teacher.getAllSlotsPerSession()[session];
+			for (auto timeSlot : session)
+			{
+				// Allow the exploration of all solution, the weight of a given slot vary between 1 ("good" slot) and 5 ("bad" slot)
+				int slotScore = 5.0 - mapSessionsNeighborhoodStructure[timeSlot];
+				for (int cpt = 0; cpt < slotScore; cpt++)
+				{
+					allSlotEntries.push_back(mapSessionsSlot[timeSlot]);
+				}
+			}
+		}
+	}
+	
+	// Select 1 slotat random
+	ul ulRandomSlot = rand() % allSlotEntries.size();
+	Slot *pPickedSlot = allSlotEntries[ulRandomSlot];
+	Teacher *pPickedTeacher = pPickedSlot->pTeacher;
+	Class *pPickedClass = pPickedSlot->pClass;
+
+	
+	// remove it
+
+	allSlotEntries.erase(std::remove(allSlotEntries.begin(), allSlotEntries.end(), pPickedSlot), allSlotEntries.end());
+	pPickedSlot->pTeacher = nullptr;
+	pPickedSlot->pClass = nullptr;
+	pPickedTeacher->freeSlot(pPickedSlot);
+	pPickedClass->freeSlot(pPickedSlot);
+	_allUnusedSlots.push_back(pPickedSlot);
+
+	// Reinsert the slot in the available ones
+	_timeSlotPerClasses[pPickedClass].erase(pPickedSlot->ts);
+	_mapTS[pPickedSlot->ts].push_back(pPickedSlot);
+
+	// TODO : Redraw one slot
 
 }
 

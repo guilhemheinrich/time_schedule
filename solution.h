@@ -28,8 +28,9 @@ private:
 	std::vector<Slot*> _allUnusedSlots;
 
 	// Internals
-	std::vector<std::pair<Class*, ul> > _cptByClasses;
-	std::vector<std::pair<Class*, std::set<Schedule::time_slot> >> _timeSlotPerClasses;
+	std::map<Schedule::time_slot, std::vector<Slot*> > _mapTS;
+	//std::vector<std::pair<Class*, std::set<Schedule::time_slot> >> _timeSlotPerClasses;
+	std::map<Class*, std::set<Schedule::time_slot> > _timeSlotPerClasses;
 	std::set<Schedule::time_slot> _globallyUsedTimeSlots;
 };
 

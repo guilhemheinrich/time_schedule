@@ -50,9 +50,16 @@ namespace Schedule
 		friend bool operator>=(const session &in_lValue, const session &in_rValue);
 		friend bool operator<(const session &in_lValue, const session &in_rValue);
 		friend bool operator>(const session &in_lValue, const session &in_rValue);
+
+		std::set<time_slot>::iterator begin();
+		std::set<time_slot>::iterator end();
+
+		std::set<time_slot>::const_iterator begin() const;
+		std::set<time_slot>::const_iterator end() const;
 	private:
 		tm _start;
 		ul _hourDuration = 8;
+		std::set<time_slot> _allTimeSlots;
 		std::string _ID;
 	};
 
@@ -78,7 +85,8 @@ namespace Schedule
 
 		void at(time_slot in_timeSlot, TYPE in_newValue);
 		const ul size() const;
-		const std::pair<time_slot, TYPE>& operator[](time_slot in_timeSlot) const;
+		const TYPE& operator[](time_slot in_timeSlot) const;
+		TYPE& operator[](time_slot in_timeSlot);
 
 		const std::map<time_slot, TYPE > getContent() const;
 		std::map<time_slot, TYPE > getContent();
@@ -111,6 +119,10 @@ namespace Schedule
 
 		time_slot& operator++(); // prefix operator
 		time_slot operator++(int); // postfix operator
+
+
+		time_slot& operator--(); // prefix operator
+		time_slot operator--(int); // postfix operator
 
 	private:
 		// used internally to compare time slot
@@ -217,9 +229,15 @@ namespace Schedule
 	}
 
 	template<typename TYPE>
-	inline const std::pair<time_slot, TYPE>& SessionPrototype<TYPE>::operator[](time_slot in_timeSlot) const
+	inline const TYPE& SessionPrototype<TYPE>::operator[](time_slot in_timeSlot) const
 	{
 		return _content.at(in_timeSlot);
+	}
+
+	template<typename TYPE>
+	inline TYPE& SessionPrototype<TYPE>::operator[](time_slot in_timeSlot)
+	{
+		return _content[in_timeSlot];
 	}
 
 	template<typename TYPE>

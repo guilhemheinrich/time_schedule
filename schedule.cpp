@@ -80,6 +80,21 @@ namespace Schedule
 		return result;
 	}
 
+	time_slot & time_slot::operator--()
+	{
+		// TODO: insérer une instruction return ici
+		start.tm_hour--;
+		end.tm_hour--;
+		return *this;
+	}
+
+	time_slot time_slot::operator--(int)
+	{
+		time_slot result(*this);	// make a copy for result
+		--(*this);					// Now use the prefix version to do the work
+		return result;
+	}
+
 
 
 	bool operator==(const time_slot &in_lValue, const time_slot &in_rValue)
@@ -129,6 +144,18 @@ namespace Schedule
 		_start(in_start), _hourDuration(in_hourDuration)
 	{ 
 		_ID = std::to_string(in_start.tm_year) + "_" + std::to_string(in_start.tm_yday) + "_" + std::to_string(in_start.tm_hour) + "x" + std::to_string(in_hourDuration);
+
+		for (ul ulCpt = 0; ulCpt < in_hourDuration; ulCpt++)
+		{
+			time_slot tmpTm;
+
+			tmpTm.start = in_start;
+			tmpTm.start.tm_hour += ulCpt;
+
+			tmpTm.end = tmpTm.start;
+			tmpTm.end.tm_hour++;
+			_allTimeSlots.insert(tmpTm);
+		}
 	}
 
 	tm session::start() const
@@ -139,6 +166,26 @@ namespace Schedule
 	ul session::hourDuration() const
 	{
 		return _hourDuration;
+	}
+
+	std::set<time_slot>::iterator session::begin()
+	{
+		return _allTimeSlots.begin();
+	}
+
+	std::set<time_slot>::iterator session::end()
+	{
+		return _allTimeSlots.end();
+	}
+
+	std::set<time_slot>::const_iterator session::begin() const
+	{
+		return _allTimeSlots.begin();
+	}
+
+	std::set<time_slot>::const_iterator session::end() const
+	{
+		return _allTimeSlots.end();
 	}
 
 	bool operator==(const session &in_lValue, const session &in_rValue)

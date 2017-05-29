@@ -11,6 +11,7 @@ TimeScheduleEntity::TimeScheduleEntity(std::vector<Schedule::session> in_allSess
 {
 	for (Schedule::session tmpSession : in_allSessions)
 	{
+		_allSessions.insert(tmpSession);
 		_allSlotsPerSessions[tmpSession] = Schedule::SessionPrototype<Slot*>(tmpSession, nullptr);
 		_allNeighborhoodStructurePerSessions[tmpSession] = Schedule::SessionPrototype<double>(tmpSession, 0.0);
 	}
@@ -36,14 +37,32 @@ void TimeScheduleEntity::addSlot(Slot * in_slot)
 {
 	Schedule::session sessionTmp = in_slot->ts.session;
 	_allSlotsPerSessions[sessionTmp].at(in_slot->ts, in_slot);
+	if (_allNeighborhoodStructurePerSessions[sessionTmp].getContent().count(in_slot->ts++) == 1)
+	{
+		_allNeighborhoodStructurePerSessions[sessionTmp][in_slot->ts++] += 1.0;
+	}
+	if (_allNeighborhoodStructurePerSessions[sessionTmp].getContent().count(in_slot->ts--) == 1)
+	{
+		_allNeighborhoodStructurePerSessions[sessionTmp][in_slot->ts--] += 1.0;
+	}
+
+
 }
 
 void TimeScheduleEntity::freeSlot(Slot * in_slot)
 {
-	Schedule::session tmpSession = in_slot->ts.session;
+	Schedule::session sessionTmp = in_slot->ts.session;
 	// Should be in a upper level function
 	//in_slot->occupied = false;
-	_allSlotsPerSessions[tmpSession].at(in_slot->ts, nullptr);
+	_allSlotsPerSessions[sessionTmp].at(in_slot->ts, nullptr);
+	if (_allNeighborhoodStructurePerSessions[sessionTmp].getContent().count(in_slot->ts++) == 1)
+	{
+		_allNeighborhoodStructurePerSessions[sessionTmp][in_slot->ts++] -= 1.0;
+	}
+	if (_allNeighborhoodStructurePerSessions[sessionTmp].getContent().count(in_slot->ts--) == 1)
+	{
+		_allNeighborhoodStructurePerSessions[sessionTmp][in_slot->ts--] -= 1.0;
+	}
 }
 
 double TimeScheduleEntity::score()
@@ -89,4 +108,14 @@ double TimeScheduleEntity::score()
 std::map<Schedule::session, Schedule::SessionPrototype<Slot*>> TimeScheduleEntity::getAllSlotsPerSession() const
 {
 	return _allSlotsPerSessions;
+}
+
+std::map<Schedule::session, Schedule::SessionPrototype<double>> TimeScheduleEntity::getAllNeighborhoodStructurePerSessions() const
+{
+	return _allNeighborhoodStructurePerSessions;
+}
+
+std::set<Schedule::session> TimeScheduleEntity::getAllSessions() const
+{
+	return _allSessions;
 }
