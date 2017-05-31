@@ -11,6 +11,7 @@
 #include "solution.h"
 
 #include <iostream>
+#include <fstream>
 #include <ctime>
 #include <algorithm>
 #include <cstdlib>
@@ -49,8 +50,21 @@ struct test_struct {
 	int i;
 };
 
-int main()
+int main(int argc, char** argv)
 {
+	if (argc != 4)
+	{
+		cout << "unappropriate parameter : " << endl;
+		cout << "first argument is the number of solution" << endl;
+		cout << "second argument is the number of generation" << endl;
+		cout << "third argument is the mutation rate (0<m<1)" << endl;
+	}
+	// argv[1] is the number of solution
+	// argv[2] is the number of generation
+	// argv[3] is the mutation rate
+
+	ofstream outputFile;
+	outputFile.open("timeSchedule_log.txt");
 	// Building the time structure
 	tm root_day;
 	root_day.tm_sec = 1;   // seconds of minutes from 0 to 61
@@ -155,123 +169,74 @@ int main()
 	// Première génération
 	srand(time(NULL));
 
-	Solution firstSolution(allClasses, allTeacher, allSlots, &allTimeSlot);
-	firstSolution.generate();
+	//Solution firstSolution(allClasses, allTeacher, allSlots, &allTimeSlot);
+	//firstSolution.generate();
 
 
-	Solution secondSolution(allClasses, allTeacher, allSlots, &allTimeSlot);
-	secondSolution.generate();
+	//Solution secondSolution(allClasses, allTeacher, allSlots, &allTimeSlot);
+	//secondSolution.generate();
+	ul ulNbMutation;
+	ul ulSolutionNumber;
+	double dMutationPercent;
 
-	cout << "first solution score " << firstSolution.getScore() << endl;
+	sscanf_s(argv[1], "%d", &ulSolutionNumber);
+	sscanf_s(argv[2], "%d", &ulNbMutation);
+	sscanf_s(argv[3], "%lf", &dMutationPercent);
 
-	cout << "second solution score " << secondSolution.getScore() << endl;
-
-
-	// Build the cpt of remaining hours by class (same order as allClasses)
-	//std::vector<std::pair<Class*, ul> > cptByClasses;
-
-	//ul ulCpt = 0;
-	//for (auto &pClass : allClasses)
-	//{
-	//	cptByClasses.push_back(std::pair<Class*, ul>(&pClass, 0));
-	//	std::map<Subject, hourObjectiveAndFill > mRemainingHours = pClass.getSubjectAndRequirements();
-	//	for (auto pSubjectANdHourObjectiveAndFill : mRemainingHours)
-	//	{
-	//		cptByClasses[ulCpt].second += pSubjectANdHourObjectiveAndFill.second.objective;
-	//	}
-	//	ulCpt++;
-	//}
-
-	//// Keep track of the time slots used per classes
-	//std::vector<std::pair<Class*, std::set<Schedule::time_slot> >> timeSlotPerClasses;
-	//timeSlotPerClasses.resize(allClasses.size());
-	//std::set<Schedule::time_slot> globallyUsedTimeSlots;
-
-	//// Keep track of the  time_slots a class uses
-
-	//
-	//// Set the mapping function, 
-	//std::map<Schedule::time_slot, std::vector<Slot*> > mapTS = mapper::reducer<Schedule::time_slot>(allSlots);
-
-	//// random slot(class, room, time_slot) made in two steps : first we choose the class , then the (room, time_slot), among available ones
-	//// P(class, room, time_slot) = P(class)  x P(time_slot, room | class) = P(class)  x P(time_slot, room), independency
-
-	//srand (time(NULL));
-	//while (cptByClasses.size() != 0)
-	//{
-	//	// Choose a random class
-	//	cout << "there is " << cptByClasses.size() << " classes remaining" << endl;
-	//	ul ulRandomClass = rand() % cptByClasses.size();
-	//	Class* pCurrentClass = cptByClasses[ulRandomClass].first;
-
-	//	cout << "picked class : " << pCurrentClass->getName() << " which is class number " << ulRandomClass << endl;
-
-	//	// Pick an availble time slot
-	//	std::vector<Schedule::time_slot> tmpAvailableSlots;
-	//	std::vector<Schedule::time_slot> availableTimeSlots;
-	//	set_difference(allTimeSlot.begin(), allTimeSlot.end(), timeSlotPerClasses[ulRandomClass].second.begin(), timeSlotPerClasses[ulRandomClass].second.end(), std::inserter(tmpAvailableSlots, tmpAvailableSlots.begin()));
-	//	set_difference(tmpAvailableSlots.begin(), tmpAvailableSlots.end(), globallyUsedTimeSlots.begin(), globallyUsedTimeSlots.end(), std::inserter(availableTimeSlots, availableTimeSlots.begin()));
-
-	//	cout << "there is " << availableTimeSlots.size() << " time slots remaining" << endl;
-
-	//	ul ulPickedTimeSlot = rand() % availableTimeSlots.size();
-
-	//	cout << "picked time_slot " << ulPickedTimeSlot << endl;
-
-	//	// Pick an available slot
-	//	std::vector<Slot*> availableSlots = mapTS[availableTimeSlots[ulPickedTimeSlot]];
-	//	if (mapTS[availableTimeSlots[ulPickedTimeSlot]].size() == 0)
-	//	{
-	//		cout << "this is not an available time slot" << endl;
-	//	}
-	//	cout << "there is " << mapTS[availableTimeSlots[ulPickedTimeSlot]].size() << " slots remaining" << endl;
-
-	//	ul ulPickedSlot = rand() % availableSlots.size();
-
-	//	cout << "picked slot " << ulPickedTimeSlot << endl;
+	std::vector<double> vStartScore;
+	std::vector<std::vector<double> > vMutateScore;
+	vMutateScore.resize(ulSolutionNumber);
 
 
-	//	// Pick an available subject
-	//	std::vector<Subject> availableSubjects = pCurrentClass->notFilledObjective();
-	//	if (availableSubjects.size() == 0)
-	//	{
-	//		cout << "this class doesnt possess any subject to fill anymore" << endl;
-	//		cptByClasses.erase(cptByClasses.begin() + ulRandomClass);
-	//		continue;
-	//	}
-	//	ul ulPickedSubject = rand() % availableSubjects.size();
+	//startScore[0] = firstSolution.getScore();
+	//startScore[1] = secondSolution.getScore();
 
-	//	// Do the stuff accordingly
-	//	// Class & teacher
-	//	
-	//	if (pCurrentClass->addOneHour(availableSlots[ulPickedSlot], availableSubjects[ulPickedSubject]))
-	//	{			
-	//		//cout << "hour added" << endl;
-	//	}
+	std::vector<Solution*> vAllSolution;
+	for (ul ulCpt = 0; ulCpt < ulSolutionNumber; ulCpt++)
+	{
+		vAllSolution.push_back(new Solution(allClasses, allTeacher, allSlots, &allTimeSlot));
+		vAllSolution[ulCpt]->generate();
+		vStartScore.push_back(vAllSolution[ulCpt]->getScore());
+	}
 
-	//	// Remove the slot from the available ones and add the time slot to the used for the class
-	//	mapTS[availableTimeSlots[ulPickedTimeSlot]].erase(mapTS[availableTimeSlots[ulPickedTimeSlot]].begin() + ulPickedSlot);
-	//	if (mapTS[availableTimeSlots[ulPickedTimeSlot]].size() == 0)
-	//	{
-	//		mapTS.erase(availableTimeSlots[ulPickedTimeSlot]);
-	//		globallyUsedTimeSlots.insert(availableTimeSlots[ulPickedTimeSlot]);
-	//	}
+	for (ul ulGeneration = 0; ulGeneration < ulNbMutation; ulGeneration++)
+	{
+		for (ul ulCpt = 0; ulCpt < ulSolutionNumber; ulCpt++)
+		{
+			vAllSolution[ulCpt]->mutate(dMutationPercent);
+			vMutateScore[ulCpt].push_back(vAllSolution[ulCpt]->getScore());
+		}
+		//firstSolution.mutate(dMutationPercent);
+		//secondSolution.mutate(dMutationPercent);
+		//mutateScore[ulCpt][0] = firstSolution.getScore();
+		//mutateScore[ulCpt][1] = secondSolution.getScore();
+	}
 
-	//	timeSlotPerClasses[ulRandomClass].first = pCurrentClass;
-	//	timeSlotPerClasses[ulRandomClass].second.insert(availableTimeSlots[ulPickedTimeSlot]);
+	for (ul ulCpt = 0; ulCpt < ulSolutionNumber; ulCpt++)
+	{
+		outputFile << "Solution " << ulCpt << " startScore " << vStartScore[ulCpt] << endl;
+		for (ul ulGeneration = 0; ulGeneration < ulNbMutation; ulGeneration++)
+		{
+			outputFile << "mutation " << ulGeneration << " " << vMutateScore[ulCpt][ulGeneration] << endl;
+		}
+		outputFile << endl;
+	}
 
-	//	cout << "________________________" << endl;
-	//}
+	// csv generation
+	cout << "csv outputing" << endl;
+	ofstream csvFile;
+	std::string csvName = "data_pop_" + to_string(ulSolutionNumber) + "_gen _" + to_string(ulNbMutation) + "_mrate_" + to_string(dMutationPercent) + ".csv";
+	csvFile.open(csvName);
+	for (ul ulCpt = 0; ulCpt < ulSolutionNumber; ulCpt++)
+	{
+		csvFile << vStartScore[ulCpt] << ";";
+		for (ul ulGeneration = 0; ulGeneration < ulNbMutation; ulGeneration++)
+		{
+			csvFile << vMutateScore[ulCpt][ulGeneration] << ";";
+		}
+		csvFile << endl;
+	}
 
-	//for (auto &tmpClass : allClasses)
-	//{
-	//	cout << tmpClass.score() << endl;
-	//}
-
-	//for (auto tmpTeacher : allTeacher)
-	//{
-	//	cout << tmpTeacher->score() << endl;
-	//}
 	cin.get();
     return 0;
 }

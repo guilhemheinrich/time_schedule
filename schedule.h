@@ -43,7 +43,7 @@ namespace Schedule
 
 		tm start() const;
 		ul hourDuration() const;
-
+		std::string id() const;
 
 		friend bool operator==(const session &in_lValue, const session &in_rValue);
 		friend bool operator<=(const session &in_lValue, const session &in_rValue);

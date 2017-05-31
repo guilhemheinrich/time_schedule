@@ -47,6 +47,13 @@ bool Class::addOneHour(Slot* in_slot, Subject in_subject)
 
 }
 
+bool Class::removeOneHour(Slot * in_slot, Subject in_subject)
+{
+	_subjectsAndRequirements[in_subject].fill--;
+	freeSlot(in_slot);
+	return true;
+}
+
 std::map<Subject, Teacher*> Class::getTeachers() const
 {
 	return _dedicatedTeacher;

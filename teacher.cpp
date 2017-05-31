@@ -47,3 +47,10 @@ bool Teacher::addOneHour(Slot* in_slot)
 		return true;
 	}
 }
+
+bool Teacher::removeOneHour(Slot * in_slot)
+{
+	_hourGiven--;
+	freeSlot(in_slot);
+	return true;
+}

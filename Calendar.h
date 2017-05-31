@@ -23,10 +23,6 @@ struct Slot
 	Class *pClass = nullptr;
 
 	double score() const;
-
-//private:
-//	Slot *previous = nullptr;
-//	Slot *next = nullptr;
 };
 
 class Calendar

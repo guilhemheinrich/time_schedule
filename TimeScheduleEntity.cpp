@@ -37,13 +37,25 @@ void TimeScheduleEntity::addSlot(Slot * in_slot)
 {
 	Schedule::session sessionTmp = in_slot->ts.session;
 	_allSlotsPerSessions[sessionTmp].at(in_slot->ts, in_slot);
-	if (_allNeighborhoodStructurePerSessions[sessionTmp].getContent().count(in_slot->ts++) == 1)
+	Schedule::time_slot tmpTs = in_slot->ts;
+	tmpTs++;
+	if (_allNeighborhoodStructurePerSessions[sessionTmp].getContent().count(tmpTs) == 1)
 	{
-		_allNeighborhoodStructurePerSessions[sessionTmp][in_slot->ts++] += 1.0;
+		_allNeighborhoodStructurePerSessions[sessionTmp][tmpTs] += 1.0;
 	}
-	if (_allNeighborhoodStructurePerSessions[sessionTmp].getContent().count(in_slot->ts--) == 1)
+	else
 	{
-		_allNeighborhoodStructurePerSessions[sessionTmp][in_slot->ts--] += 1.0;
+		_allNeighborhoodStructurePerSessions[sessionTmp][tmpTs--] += 1.0;
+	}
+	tmpTs = in_slot->ts;
+	tmpTs--;
+	if (_allNeighborhoodStructurePerSessions[sessionTmp].getContent().count(tmpTs) == 1)
+	{
+		_allNeighborhoodStructurePerSessions[sessionTmp][tmpTs] += 1.0;
+	}
+	else
+	{
+		_allNeighborhoodStructurePerSessions[sessionTmp][tmpTs++] += 1.0;
 	}
 
 
@@ -52,16 +64,26 @@ void TimeScheduleEntity::addSlot(Slot * in_slot)
 void TimeScheduleEntity::freeSlot(Slot * in_slot)
 {
 	Schedule::session sessionTmp = in_slot->ts.session;
-	// Should be in a upper level function
-	//in_slot->occupied = false;
 	_allSlotsPerSessions[sessionTmp].at(in_slot->ts, nullptr);
-	if (_allNeighborhoodStructurePerSessions[sessionTmp].getContent().count(in_slot->ts++) == 1)
+	Schedule::time_slot tmpTs = in_slot->ts;
+	tmpTs++;
+	if (_allNeighborhoodStructurePerSessions[sessionTmp].getContent().count(tmpTs) == 1)
 	{
-		_allNeighborhoodStructurePerSessions[sessionTmp][in_slot->ts++] -= 1.0;
+		_allNeighborhoodStructurePerSessions[sessionTmp][tmpTs] -= 1.0;
 	}
-	if (_allNeighborhoodStructurePerSessions[sessionTmp].getContent().count(in_slot->ts--) == 1)
+	else
 	{
-		_allNeighborhoodStructurePerSessions[sessionTmp][in_slot->ts--] -= 1.0;
+		_allNeighborhoodStructurePerSessions[sessionTmp][tmpTs--] -= 1.0;
+	}
+	tmpTs = in_slot->ts;
+	tmpTs--;
+	if (_allNeighborhoodStructurePerSessions[sessionTmp].getContent().count(tmpTs) == 1)
+	{
+		_allNeighborhoodStructurePerSessions[sessionTmp][tmpTs] -= 1.0;
+	}
+	else
+	{
+		_allNeighborhoodStructurePerSessions[sessionTmp][tmpTs++] -= 1.0;
 	}
 }
 

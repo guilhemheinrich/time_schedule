@@ -30,6 +30,7 @@ public:
 	void setSubjectAndRequirement(Subject in_subject, hourObjectiveAndFill in_objectiveAndFill);
 
 	bool addOneHour(Slot* in_slot, Subject in_subject);
+	bool removeOneHour(Slot* in_slot, Subject in_subject);
 
 	std::map <Subject, Teacher*> getTeachers() const;
 	std::map<Subject, hourObjectiveAndFill > getSubjectAndRequirements() const;

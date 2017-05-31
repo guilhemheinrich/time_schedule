@@ -20,6 +20,7 @@ public:
 	std::set<Class*> getClasses() const;
 	Subject getSubject()  const;
 	bool addOneHour(Slot* in_slot);
+	bool removeOneHour(Slot* in_slot);
 
 private:
 

@@ -16,7 +16,7 @@ public:
 	~Solution();
 
 	void generate();
-	void mutate();
+	void mutate(double in_genomePercent = 0.1);
 
 	double getScore() const;
 private:

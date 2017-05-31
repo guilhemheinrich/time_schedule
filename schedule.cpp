@@ -168,6 +168,11 @@ namespace Schedule
 		return _hourDuration;
 	}
 
+	std::string session::id() const
+	{
+		return _ID;
+	}
+
 	std::set<time_slot>::iterator session::begin()
 	{
 		return _allTimeSlots.begin();
