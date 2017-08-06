@@ -12,6 +12,7 @@ class Solution
 {
 public:
 	Solution();
+	Solution(const Solution& in_solution);
 	Solution(std::vector<Class> in_allClasses, std::vector<Teacher> in_allTeachers, std::vector<Slot> in_allSlots, std::set<Schedule::time_slot> *in_pAllTimeSlots);
 	~Solution();
 
@@ -25,14 +26,17 @@ private:
 	std::vector<Teacher> _allTeachers;
 	std::set<Schedule::time_slot> *_pAllTimeSlots;
 	std::vector<Slot*> _allSlots;
-	std::vector<Slot*> _allUnusedSlots;
+	//std::vector<Slot*> _allUnusedSlots;
 
 	// Internals
 	std::map<Schedule::time_slot, std::vector<Slot*> > _mapTS;
-	//std::vector<std::pair<Class*, std::set<Schedule::time_slot> >> _timeSlotPerClasses;
 	std::map<Class*, std::set<Schedule::time_slot> > _timeSlotPerClasses;
 	std::set<Schedule::time_slot> _globallyUsedTimeSlots;
 };
+
+// Breeeds a new generation of solution by selecting the top percentage of the solution's vector.
+
+std::vector<Solution> breeding(std::vector<Solution> in_vSolutions, double in_dTopPercentage = 0.1);
 
 
 #endif // SOLUTION_H

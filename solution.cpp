@@ -11,9 +11,112 @@ Solution::Solution()
 
 }
 
+Solution::Solution(const Solution & in_solution):
+	_allClasses(in_solution._allClasses), _allTeachers(in_solution._allTeachers), _pAllTimeSlots(in_solution._pAllTimeSlots),
+	_globallyUsedTimeSlots(in_solution._globallyUsedTimeSlots)
+{
+	// Shallow copy are made in the initilizator list
+	// Now we handle deep copy of the containers
+
+	// We need to initialize the correct pointers to teachers from the classes.
+	// For that, we will create new pointers to point to the teachers and classes
+	std::map<std::string, Class*> classNameToPointer;
+	std::map<std::string, Teacher*> teacherNamePointer;
+
+
+	for (auto &refClass : _allClasses)
+	{
+		classNameToPointer[refClass.getName()] = &refClass;
+	}
+	for (auto &refTeacher : _allTeachers)
+	{
+		teacherNamePointer[toString(refTeacher.getSubject()) + "_" + refTeacher.getName()] = &refTeacher;
+	}
+
+	for (auto &refClass : _allClasses)
+	{
+		std::map <Subject, Teacher*> tmpTeacherForClassBySubject = refClass.getTeachers();
+		for (auto pSubjectAndPteacher : tmpTeacherForClassBySubject)
+		{
+			// Find the relevent teacher
+			std::string subject_teacher = toString(pSubjectAndPteacher.first) + "_" + pSubjectAndPteacher.second->getName();
+			Teacher *pTeacher = teacherNamePointer[subject_teacher];
+			refClass.setTeacherForSubject(pSubjectAndPteacher.first, pTeacher);
+		}
+	}
+
+	for (auto &refTeacher : _allTeachers)
+	{
+		std::set <Class*> tmpClasses = refTeacher.getClasses();
+		for (auto pClass : tmpClasses)
+		{
+			// Find the relevent teacher
+			std::string className = pClass->getName();
+			Class *pClass = classNameToPointer[className];
+			refTeacher.addClass(pClass);
+		}
+	}
+
+	
+	for (Slot *tmpSlot : in_solution._allSlots)
+	{
+		Slot *pSlot = new Slot(*tmpSlot);
+		// HANDLE when there is a teacher and a class
+		if (tmpSlot->pTeacher != nullptr)
+		{
+			// Bind the new slot with correct pointer
+			// Parse teacher pointer to correct teacher
+			std::string teacherName = toString(tmpSlot->pTeacher->getSubject());
+			teacherName += "_" + tmpSlot->pTeacher->getName();
+			Teacher *pTeacher = teacherNamePointer[teacherName];
+			pSlot->pTeacher = pTeacher;
+		}
+
+		if (tmpSlot->pClass != nullptr)
+		{
+			// Parse class pointer to correct class
+			std::string className = tmpSlot->pClass->getName();
+			Class *pClass = classNameToPointer[className];
+			pSlot->pClass = pClass;
+		}
+		_allSlots.push_back(pSlot);
+
+	}
+
+	//for (Slot *tmpSlot : in_solution._allUnusedSlots)
+	//{
+	//	Slot *pSlot = new Slot(*tmpSlot);
+	//	_allUnusedSlots.push_back(pSlot);
+	//}
+
+	// Set the mapping ts internals, 
+	
+	for (Slot* pSlot : _allSlots)
+	{
+		if ( pSlot->pClass == nullptr)
+		{
+			_mapTS[pSlot->ts].push_back(pSlot);
+		}
+	}
+
+	
+
+
+
+	for (auto pClassAndSetTS : in_solution._timeSlotPerClasses)
+	{
+		std::string className = pClassAndSetTS.first->getName();
+		Class * pClass = classNameToPointer[className];
+		_timeSlotPerClasses[pClass] = pClassAndSetTS.second;
+
+	}
+
+
+}
+
 Solution::Solution(std::vector<Class> in_allClasses, std::vector<Teacher> in_allTeachers, std::vector<Slot> in_allSlots, std::set<Schedule::time_slot> *in_pAllTimeSlots):
 	_allClasses(in_allClasses), _allTeachers(in_allTeachers), _pAllTimeSlots(in_pAllTimeSlots)
-{
+{ 
 	for (Slot tmpSlot : in_allSlots)
 	{
 		Slot *pSlot = new Slot(tmpSlot);
@@ -22,7 +125,7 @@ Solution::Solution(std::vector<Class> in_allClasses, std::vector<Teacher> in_all
 
 	// We need to initialize the correct pointers to teachers from the classes.
 	// For that, we will create new pointers to point to the teachers and classes
-	std::map< std::string, Class*> classNameToPointer;
+	std::map<std::string, Class*> classNameToPointer;
 	std::map<std::string, Teacher*> teacherNamePointer;
 
 
@@ -62,6 +165,15 @@ Solution::Solution(std::vector<Class> in_allClasses, std::vector<Teacher> in_all
 
 Solution::~Solution()
 {
+	for (auto *pSlot : _allSlots)
+	{
+		delete pSlot;
+	}
+
+	//for (auto *pSlot : _allUnusedSlots)
+	//{
+	//	delete pSlot;
+	//}
 }
 
 void Solution::generate()
@@ -121,10 +233,7 @@ void Solution::generate()
 
 		// Pick an available slot
 		std::vector<Slot*> availableSlots = _mapTS[availableTimeSlots[ulPickedTimeSlot]];
-		if (_mapTS[availableTimeSlots[ulPickedTimeSlot]].size() == 0)
-		{
-			//std::cout << "this is not an available time slot" << std::endl;
-		}
+
 		//std::cout << "there is " << mapTS[availableTimeSlots[ulPickedTimeSlot]].size() << " slots remaining" << std::endl;
 
 		ul ulPickedSlot = rand() % availableSlots.size();
@@ -182,6 +291,7 @@ void Solution::mutate(double in_genomePercent)
 	std::vector<Slot*> allSelectedSlots;
 	std::vector<Slot*> allPickedSlots;
 	std::vector<Slot*> allNullptTeacherSlots;
+	std::vector<Slot*> allUnusedSlots;
 
 	std::vector<Slot*> allSlotEntries;
 	ul ulNumberOfSlots = 0;
@@ -227,9 +337,11 @@ void Solution::mutate(double in_genomePercent)
 		allSlotEntries.erase(std::remove(allSlotEntries.begin(), allSlotEntries.end(), pPickedSlot), allSlotEntries.end());
 		pPickedSlot->pTeacher = nullptr;
 		pPickedSlot->pClass = nullptr;
+		pPickedSlot->occupied = false;
 		pPickedTeacher->removeOneHour(pPickedSlot);
 		pPickedClass->removeOneHour(pPickedSlot, pPickedTeacher->getSubject());
-		_allUnusedSlots.push_back(pPickedSlot);
+		//_allUnusedSlots.push_back(pPickedSlot);
+		//allUnusedSlots.push_back(pPickedSlot);
 
 
 
@@ -311,3 +423,8 @@ double Solution::getScore() const
 	return totalScore;
 }
 
+std::vector<Solution> breeding(std::vector<Solution> in_vSolutions, double in_dTopPercentage)
+{
+
+	return std::vector<Solution>();
+}

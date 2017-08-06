@@ -80,7 +80,7 @@ int main(int argc, char** argv)
 	Schedule::initalizeRootDay(root_day);
 	// representation of a week as a time schedule
 	std::vector<Schedule::session> sessions_template;
-	
+
 	// Let's build 6 days, starting from the root day, from 8 am to 4pm (8 hours long)
 
 	for (ul ulCpt = 0; ulCpt < 6; ulCpt++)
@@ -183,6 +183,12 @@ int main(int argc, char** argv)
 	sscanf_s(argv[2], "%d", &ulNbMutation);
 	sscanf_s(argv[3], "%lf", &dMutationPercent);
 
+	cout << "Algorithm lunched" << endl;
+	cout << "\tSolution number : " << ulSolutionNumber << endl;
+	cout << "\tGeneration count : " << ulNbMutation << endl;
+	cout << "\tMutation rate : " << dMutationPercent << endl;
+
+
 	std::vector<double> vStartScore;
 	std::vector<std::vector<double> > vMutateScore;
 	vMutateScore.resize(ulSolutionNumber);
@@ -197,6 +203,28 @@ int main(int argc, char** argv)
 		vAllSolution.push_back(new Solution(allClasses, allTeacher, allSlots, &allTimeSlot));
 		vAllSolution[ulCpt]->generate();
 		vStartScore.push_back(vAllSolution[ulCpt]->getScore());
+
+	}
+	cout << "First generation completed with score :" << endl;
+	for (ul ulCpt = 0; ulCpt < ulSolutionNumber; ulCpt++)
+	{
+		cout << vStartScore[ulCpt] << endl;
+
+	}
+
+	// Copyed population
+	std::vector<Solution*> vAllSolutionCopyed;
+	for (auto solution : vAllSolution)
+	{
+		Solution *tmpSolution = new Solution(*solution);
+		vAllSolutionCopyed.push_back(tmpSolution);
+		vStartScore.push_back(tmpSolution->getScore());
+	}
+
+	cout << "First copyed generation completed with score :" << endl;
+	for (ul ulCpt = 0; ulCpt < ulSolutionNumber; ulCpt++)
+	{
+		cout << vStartScore[ulCpt + ulSolutionNumber] << endl;
 	}
 
 	for (ul ulGeneration = 0; ulGeneration < ulNbMutation; ulGeneration++)
@@ -206,10 +234,10 @@ int main(int argc, char** argv)
 			vAllSolution[ulCpt]->mutate(dMutationPercent);
 			vMutateScore[ulCpt].push_back(vAllSolution[ulCpt]->getScore());
 		}
-		//firstSolution.mutate(dMutationPercent);
-		//secondSolution.mutate(dMutationPercent);
-		//mutateScore[ulCpt][0] = firstSolution.getScore();
-		//mutateScore[ulCpt][1] = secondSolution.getScore();
+		for (ul ulCpt = 0; ulCpt < ulSolutionNumber; ulCpt++)
+		{
+			vAllSolutionCopyed[ulCpt]->mutate(dMutationPercent);
+		}
 	}
 
 	for (ul ulCpt = 0; ulCpt < ulSolutionNumber; ulCpt++)
@@ -238,6 +266,6 @@ int main(int argc, char** argv)
 	}
 
 	cin.get();
-    return 0;
+	return 0;
 }
 
